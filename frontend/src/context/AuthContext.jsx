@@ -25,20 +25,24 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = async (email, password) => {
+  const login = async (email, password, role) => {
     try {
       const res = await fetch(`${API_BASE}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, role }),
       });
 
       const data = await res.json();
 
       if (!res.ok || !data.success) {
         throw new Error(data.message || "Invalid credentials. Please try again.");
+      }
+
+      if (role && data.data?.role && data.data.role !== "admin" && data.data.role !== role) {
+        throw new Error(`Role mismatch: This account is registered as a ${data.data.role}. A ${data.data.role} cannot join or log in as a ${role}.`);
       }
 
       setToken(data.token);
@@ -76,6 +80,37 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateProfile = async (updates) => {
+    try {
+      let updatedUser = { ...user, ...updates };
+
+      if (user?._id) {
+        const usersApi = `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/users/${user._id}`;
+        const res = await fetch(usersApi, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+          body: JSON.stringify(updates),
+        });
+        const data = await res.json();
+        if (data.success && data.data) {
+          updatedUser = data.data;
+        }
+      }
+
+      setUser(updatedUser);
+      localStorage.setItem("freeio_user", JSON.stringify(updatedUser));
+      return { success: true, user: updatedUser };
+    } catch (err) {
+      const fallbackUser = { ...user, ...updates };
+      setUser(fallbackUser);
+      localStorage.setItem("freeio_user", JSON.stringify(fallbackUser));
+      return { success: true, user: fallbackUser, offline: true };
+    }
+  };
+
   const logout = () => {
     setUser(null);
     setToken(null);
@@ -92,6 +127,7 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated: !!token,
         login,
         register,
+        updateProfile,
         logout,
       }}
     >

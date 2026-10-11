@@ -34,6 +34,9 @@ export default function FreelancerDashboard() {
             </div>
 
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+              <Link to="/profile" className="btn btn-outline" style={{ background: "#eff6ff", borderColor: "#93c5fd", color: "#2563eb" }}>
+                <span>✏️ My Profile Setup</span>
+              </Link>
               <Link to="/freelancer/proposals" className="btn btn-outline">
                 View My Proposals
               </Link>
@@ -42,6 +45,56 @@ export default function FreelancerDashboard() {
               </Link>
             </div>
           </div>
+        </div>
+
+        {/* Profile Completion Prompt Card (Fill Later / Fill Now) */}
+        <div
+          style={{
+            background: "linear-gradient(135deg, #f0fdf4 0%, #eff6ff 100%)",
+            border: "1.5px solid #bbf7d0",
+            borderRadius: "16px",
+            padding: "20px 24px",
+            marginBottom: "24px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "16px",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+            <div
+              style={{
+                width: "48px",
+                height: "48px",
+                borderRadius: "12px",
+                background: "#ffffff",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "24px",
+                boxShadow: "0 2px 6px rgba(0,0,0,0.06)",
+              }}
+            >
+              🛡️
+            </div>
+            <div>
+              <div style={{ fontWeight: "800", color: "#065f46", fontSize: "16px" }}>
+                Freelancer Verification & Profile (Fill Later or Now)
+              </div>
+              <div style={{ color: "#475569", fontSize: "13.5px", marginTop: "2px" }}>
+                Upload profile picture, education, video introduction, certifications, LinkedIn, hours/week & verify Govt ID (Aadhaar/PAN on camera).
+              </div>
+            </div>
+          </div>
+
+          <Link
+            to="/profile"
+            className="btn btn-primary"
+            style={{ padding: "10px 20px", fontSize: "14px" }}
+          >
+            Complete Profile Now →
+          </Link>
         </div>
 
         {/* Quick Stats */}

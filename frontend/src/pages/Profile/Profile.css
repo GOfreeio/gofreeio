@@ -1,0 +1,829 @@
+/* ==========================================================================
+   PROFILE PAGE - Freeio Comprehensive User Profile
+   ========================================================================== */
+
+.profile-page-wrapper {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #1e293b;
+  padding-bottom: 80px;
+}
+
+.profile-container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 32px 20px;
+}
+
+/* Fill Later / Notice Banner */
+.fill-later-banner {
+  background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+  border: 1.5px solid #bfdbfe;
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.06);
+}
+
+.banner-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  max-width: 680px;
+}
+
+.banner-icon {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.banner-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #1e3a8a;
+  margin-bottom: 4px;
+}
+
+.banner-text {
+  font-size: 13.5px;
+  color: #475569;
+  line-height: 1.45;
+}
+
+.banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-fill-later {
+  padding: 10px 18px;
+  background: #ffffff;
+  color: #334155;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-fill-later:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.btn-save-top {
+  padding: 10px 22px;
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-save-top:hover {
+  background: #1d4ed8;
+}
+
+/* Profile Strength Progress Card */
+.profile-strength-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.strength-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.strength-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.strength-percent {
+  font-size: 15px;
+  font-weight: 800;
+  color: #2563eb;
+}
+
+.progress-track {
+  height: 10px;
+  background: #f1f5f9;
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb 0%, #10b981 100%);
+  border-radius: 9999px;
+  transition: width 0.4s ease;
+}
+
+.strength-checklist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.strength-chip {
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.strength-chip.done {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.strength-chip.pending {
+  background: #f8fafc;
+  color: #64748b;
+  border: 1px dashed #cbd5e1;
+}
+
+/* Profile Main Grid */
+.profile-main-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 28px;
+}
+
+@media (max-width: 900px) {
+  .profile-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Profile Section Card */
+.profile-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.profile-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.profile-card-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-card-subtitle {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* Section 1: Profile Picture & Basic Info */
+.avatar-preview-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.avatar-wrapper-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 14px;
+  background: #e2e8f0;
+}
+
+.avatar-img-view {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-fallback-initials {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+  color: #ffffff;
+  font-size: 40px;
+  font-weight: 800;
+}
+
+.avatar-action-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-upload-avatar {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-upload-avatar:hover {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.preset-avatars-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.preset-avatars-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.preset-avatar-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  background: none;
+  transition: all 0.2s ease;
+}
+
+.preset-avatar-btn.active {
+  border-color: #2563eb;
+  transform: scale(1.1);
+}
+
+.preset-avatar-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Form Controls */
+.form-field-group {
+  margin-bottom: 18px;
+}
+
+.field-label {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.field-input,
+.field-textarea,
+.field-select {
+  width: 100%;
+  padding: 11px 14px;
+  font-size: 14px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0f172a;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.field-input:focus,
+.field-textarea:focus,
+.field-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.field-help-text {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* Section: Hours Per Week */
+.hours-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.hours-option-card {
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hours-option-card:hover {
+  border-color: #93c5fd;
+  background: #f8faff;
+}
+
+.hours-option-card.selected {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.hours-option-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.hours-option-desc {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* Section: LinkedIn Account */
+.linkedin-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.linkedin-prefix-icon {
+  position: absolute;
+  left: 14px;
+  color: #0077b5;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.linkedin-connected-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+/* Section: Education */
+.education-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.education-item-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  background: #f8fafc;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.edu-item-info h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+}
+
+.edu-item-info p {
+  font-size: 13.5px;
+  color: #475569;
+  margin: 0 0 4px 0;
+}
+
+.edu-item-info span {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.btn-remove-item {
+  color: #ef4444;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: opacity 0.2s ease;
+}
+
+.btn-remove-item:hover {
+  opacity: 0.8;
+}
+
+.btn-add-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px dashed #93c5fd;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-add-secondary:hover {
+  background: #dbeafe;
+}
+
+/* Add Item Form Card */
+.add-form-inline {
+  background: #f1f5f9;
+  border-radius: 12px;
+  padding: 18px;
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-inline-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .form-inline-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Section: Video Instruction / Introduction */
+.video-preview-container {
+  margin-top: 14px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000000;
+  max-width: 640px;
+  border: 1px solid #cbd5e1;
+}
+
+.video-element {
+  width: 100%;
+  max-height: 360px;
+  display: block;
+}
+
+.video-embed-iframe {
+  width: 100%;
+  height: 320px;
+  border: none;
+  display: block;
+}
+
+.video-guidance-card {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: #1e40af;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   Section: Government Issued ID Verification (Aadhaar & PAN)
+   "appear on camera"
+   ========================================================================== */
+.id-type-selector-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.id-type-card {
+  flex: 1;
+  padding: 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.id-type-card.active {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.id-type-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.id-type-desc {
+  font-size: 11.5px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* Camera Section */
+.camera-box-wrap {
+  background: #0f172a;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  margin-top: 14px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  border: 2px solid #334155;
+}
+
+.camera-feed-video {
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+  transform: scaleX(-1); /* Mirror camera for natural feel */
+}
+
+/* Viewfinder Overlay Box for ID Card */
+.camera-viewfinder-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 380px;
+  height: 220px;
+  border: 2px dashed #38bdf8;
+  border-radius: 12px;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+}
+
+.viewfinder-tag {
+  background: rgba(14, 165, 233, 0.9);
+  color: #ffffff;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.viewfinder-subtext {
+  color: #f1f5f9;
+  font-size: 11.5px;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.camera-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px;
+  background: #1e293b;
+  width: 100%;
+}
+
+.btn-capture-shutter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: #0284c7;
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+  transition: all 0.2s ease;
+}
+
+.btn-capture-shutter:hover {
+  background: #0369a1;
+  transform: scale(1.03);
+}
+
+.btn-close-cam {
+  padding: 10px 18px;
+  background: #334155;
+  color: #f1f5f9;
+  border: none;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-close-cam:hover {
+  background: #475569;
+}
+
+/* Captured Snapshot Preview */
+.snapshot-preview-card {
+  border: 2px solid #10b981;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f8fafc;
+  margin-top: 14px;
+  position: relative;
+}
+
+.snapshot-img {
+  width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+.snapshot-watermark {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(4px);
+  color: #38bdf8;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.snapshot-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* ==========================================================================
+   Section: Billing Method ("just for show (in progress)")
+   ========================================================================== */
+.billing-in-progress-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.billing-notice-box {
+  background: #fffbeb;
+  border: 1.5px solid #fef08a;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.billing-methods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.billing-method-card {
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 18px 16px;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 130px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.billing-method-card:hover {
+  border-color: #94a3b8;
+  background: #f1f5f9;
+}
+
+.method-tag-progress {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 800;
+  color: #d97706;
+  background: #fef3c7;
+  padding: 2px 8px;
+  border-radius: 4px;
+  width: fit-content;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+/* Bottom Floating or Sticky Save Bar */
+.profile-bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 18px 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  margin-top: 32px;
+}

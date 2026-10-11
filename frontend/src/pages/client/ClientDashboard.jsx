@@ -34,6 +34,9 @@ export default function ClientDashboard() {
             </div>
 
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+              <Link to="/profile" className="btn btn-outline" style={{ background: "#eff6ff", borderColor: "#93c5fd", color: "#2563eb" }}>
+                <span>⚙️ Account Profile</span>
+              </Link>
               <Link to="/client/jobs" className="btn btn-outline">
                 My Posted Projects
               </Link>

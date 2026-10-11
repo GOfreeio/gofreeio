@@ -47,95 +47,143 @@ const Navbar = () => {
          />
          </div> */}
 
-          {/* Desktop Navigation Links */}
+          {/* Desktop Navigation Links (Only shown when authenticated) */}
           <nav className="navbar-nav">
-            <Link
-              to="/"
-              className={`nav-link ${isActive("/") ? "active" : ""}`}
-            >
-              Home
-            </Link>
-            <Link
-              to="/jobs"
-              className={`nav-link ${isActive("/jobs") ? "active" : ""}`}
-            >
-              Find Jobs
-            </Link>
-            <Link
-              to="/freelancer/dashboard"
-              className={`nav-link ${isActive("/freelancer/dashboard") || isActive("/freelancer/proposals") ? "active" : ""}`}
-            >
-              For Freelancers
-            </Link>
-            <Link
-              to="/client/dashboard"
-              className={`nav-link ${isActive("/client/dashboard") || isActive("/client/create") || isActive("/client/jobs") ? "active" : ""}`}
-            >
-              For Clients
-            </Link>
-            <Link
-              to="/about"
-              className={`nav-link ${isActive("/about") ? "active" : ""}`}
-            >
-              About
-            </Link>
-            {isAuthenticated && (
-              <Link
-                to="/messages"
-                className={`nav-link ${isActive("/messages") ? "active" : ""}`}
-                style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
-              >
-                <span>💬</span>
-                <span>{user?.role === "admin" ? "Desk Console" : "Project Desk"}</span>
-              </Link>
+            {!isAuthenticated ? (
+              // Unauthenticated visitor: Only show Outsource portal link
+              <>
+                <Link
+                  to="/outsource"
+                  className={`nav-link ${isActive("/outsource") ? "active" : ""}`}
+                  style={{ fontWeight: "700", color: "#2563eb" }}
+                >
+                  <span>🏢 Project Outsource</span>
+                </Link>
+              </>
+            ) : user?.role === "client" ? (
+              // Client navigation (NO freelancer chat desk)
+              <>
+                <Link
+                  to="/outsource"
+                  className={`nav-link ${isActive("/outsource") ? "active" : ""}`}
+                  style={{ fontWeight: "700", color: "#2563eb" }}
+                >
+                  <span>🏢 Outsource</span>
+                </Link>
+                <Link
+                  to="/client/jobs"
+                  className={`nav-link ${isActive("/client/jobs") ? "active" : ""}`}
+                >
+                  My Posted Projects
+                </Link>
+                <Link
+                  to="/client/create"
+                  className={`nav-link ${isActive("/client/create") ? "active" : ""}`}
+                >
+                  + Post Job
+                </Link>
+                <Link
+                  to="/profile"
+                  className={`nav-link ${isActive("/profile") ? "active" : ""}`}
+                >
+                  Account Profile
+                </Link>
+              </>
+            ) : user?.role === "admin" ? (
+              // Admin navigation (Talk with all freelancers & view outsource)
+              <>
+                <Link
+                  to="/messages"
+                  className={`nav-link ${isActive("/messages") ? "active" : ""}`}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontWeight: "700" }}
+                >
+                  <span>💬</span>
+                  <span>Freelancers Desk</span>
+                </Link>
+                <Link
+                  to="/outsource"
+                  className={`nav-link ${isActive("/outsource") ? "active" : ""}`}
+                >
+                  Outsource Inquiries
+                </Link>
+                <Link
+                  to="/jobs"
+                  className={`nav-link ${isActive("/jobs") ? "active" : ""}`}
+                >
+                  Jobs Console
+                </Link>
+                <Link
+                  to="/profile"
+                  className={`nav-link ${isActive("/profile") ? "active" : ""}`}
+                >
+                  Profile
+                </Link>
+              </>
+            ) : (
+              // Freelancer navigation (Browse jobs, proposals, talk with admin)
+              <>
+                <Link
+                  to="/jobs"
+                  className={`nav-link ${isActive("/jobs") ? "active" : ""}`}
+                >
+                  Find Jobs
+                </Link>
+                <Link
+                  to="/freelancer/proposals"
+                  className={`nav-link ${isActive("/freelancer/proposals") ? "active" : ""}`}
+                >
+                  My Proposals
+                </Link>
+                <Link
+                  to="/messages"
+                  className={`nav-link ${isActive("/messages") ? "active" : ""}`}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+                >
+                  <span>💬</span>
+                  <span>Desk Support (Admin)</span>
+                </Link>
+                <Link
+                  to="/profile"
+                  className={`nav-link ${isActive("/profile") ? "active" : ""}`}
+                >
+                  My Profile
+                </Link>
+                <Link
+                  to="/outsource"
+                  className={`nav-link ${isActive("/outsource") ? "active" : ""}`}
+                >
+                  Outsource
+                </Link>
+              </>
             )}
           </nav>
 
           {/* Right Action Buttons */}
           <div className="navbar-right">
-            {/* Search Icon */}
-            <button
-              className="navbar-search-btn"
-              onClick={() => setShowSearchModal(true)}
-              aria-label="Search"
-              title="Search jobs or skills"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-            </button>
+            {/* Outsource Button for immediate visibility */}
+            <Link to="/outsource" className="btn-nav-outsource" title="Outsource Client Project">
+              <span>🏢 Outsource</span>
+            </Link>
 
             {isAuthenticated ? (
               <div className="navbar-user-menu">
-                {user?.role === "client" && (
-                  <Link to="/client/create" className="btn btn-primary" style={{ padding: "6px 14px", fontSize: "13px" }}>
-                    + Post Job
-                  </Link>
-                )}
-
-                {/* Direct Messages Shortcut Button */}
                 <Link
-                  to="/messages"
-                  className="navbar-search-btn"
-                  title="Open Project Desk Chat"
-                  style={{ background: isActive("/messages") ? "#eff6ff" : "transparent", color: isActive("/messages") ? "#2563eb" : "#4b5563" }}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                  </svg>
-                </Link>
-
-                <Link
-                  to={user?.role === "client" ? "/client/dashboard" : user?.role === "admin" ? "/messages" : "/freelancer/dashboard"}
+                  to="/profile"
                   className="user-badge-link"
+                  title="View & Edit Profile"
                 >
-                  <div className="user-avatar-circle">
-                    {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
+                  <div className="user-avatar-circle" style={{ overflow: "hidden" }}>
+                    {user?.avatar ? (
+                      <img src={user.avatar} alt="Avatar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    ) : user?.name ? (
+                      user.name.charAt(0).toUpperCase()
+                    ) : (
+                      "U"
+                    )}
                   </div>
                   <div className="user-badge-info">
                     <span className="user-badge-name">{user?.name || "My Account"}</span>
-                    <span className="user-badge-role">{user?.role || "Member"}</span>
+                    <span className="user-badge-role">{user?.role === "client" ? "Client" : user?.role === "admin" ? "Admin" : "Freelancer"}</span>
                   </div>
                 </Link>
 
@@ -185,40 +233,61 @@ const Navbar = () => {
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
           <div className="navbar-mobile-menu">
-            <Link to="/" onClick={() => setMobileMenuOpen(false)}>
-              Home
+            <Link to="/outsource" onClick={() => setMobileMenuOpen(false)} style={{ color: "#2563eb", fontWeight: "800" }}>
+              🏢 Project Outsource
             </Link>
-            <Link to="/jobs" onClick={() => setMobileMenuOpen(false)}>
-              Find Jobs
-            </Link>
-            <Link to="/freelancer/dashboard" onClick={() => setMobileMenuOpen(false)}>
-              For Freelancers
-            </Link>
-            <Link to="/client/dashboard" onClick={() => setMobileMenuOpen(false)}>
-              For Clients
-            </Link>
-            <Link to="/about" onClick={() => setMobileMenuOpen(false)}>
-              About Us
-            </Link>
-            {isAuthenticated && (
-              <Link to="/messages" onClick={() => setMobileMenuOpen(false)} style={{ color: "#2563eb", fontWeight: "700" }}>
-                💬 Project Desk Messages
-              </Link>
+            {!isAuthenticated ? (
+              <>
+                <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
+                  Log In
+                </Link>
+                <Link to="/register" onClick={() => setMobileMenuOpen(false)}>
+                  Sign Up
+                </Link>
+              </>
+            ) : user?.role === "client" ? (
+              <>
+                <Link to="/client/jobs" onClick={() => setMobileMenuOpen(false)}>
+                  My Posted Projects
+                </Link>
+                <Link to="/client/create" onClick={() => setMobileMenuOpen(false)}>
+                  + Post a New Job
+                </Link>
+                <Link to="/profile" onClick={() => setMobileMenuOpen(false)}>
+                  My Profile
+                </Link>
+              </>
+            ) : user?.role === "admin" ? (
+              <>
+                <Link to="/messages" onClick={() => setMobileMenuOpen(false)} style={{ color: "#2563eb", fontWeight: "700" }}>
+                  💬 Freelancers Desk
+                </Link>
+                <Link to="/jobs" onClick={() => setMobileMenuOpen(false)}>
+                  Jobs Console
+                </Link>
+                <Link to="/profile" onClick={() => setMobileMenuOpen(false)}>
+                  Profile
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/jobs" onClick={() => setMobileMenuOpen(false)}>
+                  Find Jobs
+                </Link>
+                <Link to="/freelancer/proposals" onClick={() => setMobileMenuOpen(false)}>
+                  My Proposals
+                </Link>
+                <Link to="/messages" onClick={() => setMobileMenuOpen(false)} style={{ color: "#2563eb", fontWeight: "700" }}>
+                  💬 Desk Support (Admin)
+                </Link>
+                <Link to="/profile" onClick={() => setMobileMenuOpen(false)}>
+                  My Profile
+                </Link>
+              </>
             )}
             <hr style={{ borderColor: "#f1f5f9", margin: "8px 0" }} />
             {isAuthenticated ? (
               <>
-                {user?.role === "client" && (
-                  <Link to="/client/create" onClick={() => setMobileMenuOpen(false)} style={{ color: "#2563eb", fontWeight: "700" }}>
-                    + Post a New Job
-                  </Link>
-                )}
-                <Link
-                  to={user?.role === "client" ? "/client/dashboard" : user?.role === "admin" ? "/messages" : "/freelancer/dashboard"}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Dashboard ({user?.name})
-                </Link>
                 <button
                   onClick={() => {
                     handleLogout();

@@ -90,7 +90,23 @@ export const getUserById = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
-    const { name, email, role, avatar, bio, location, isVerified, isActive } = req.body;
+    const {
+      name,
+      email,
+      role,
+      avatar,
+      bio,
+      location,
+      education,
+      videoInstruction,
+      certifications,
+      linkedinUrl,
+      hoursPerWeek,
+      govIdVerification,
+      billingMethod,
+      isVerified,
+      isActive,
+    } = req.body;
 
     const user = await User.findByIdAndUpdate(
       req.params.id,
@@ -101,6 +117,13 @@ export const updateUser = async (req, res) => {
         ...(avatar !== undefined && { avatar }),
         ...(bio !== undefined && { bio }),
         ...(location !== undefined && { location }),
+        ...(education !== undefined && { education }),
+        ...(videoInstruction !== undefined && { videoInstruction }),
+        ...(certifications !== undefined && { certifications }),
+        ...(linkedinUrl !== undefined && { linkedinUrl }),
+        ...(hoursPerWeek !== undefined && { hoursPerWeek }),
+        ...(govIdVerification !== undefined && { govIdVerification }),
+        ...(billingMethod !== undefined && { billingMethod }),
         ...(isVerified !== undefined && { isVerified }),
         ...(isActive !== undefined && { isActive }),
       },

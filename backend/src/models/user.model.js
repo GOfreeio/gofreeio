@@ -43,6 +43,54 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
 
+    education: [
+      {
+        degree: { type: String, default: "" },
+        school: { type: String, default: "" },
+        fieldOfStudy: { type: String, default: "" },
+        startYear: { type: String, default: "" },
+        endYear: { type: String, default: "" },
+      },
+    ],
+
+    videoInstruction: {
+      url: { type: String, default: "" },
+      title: { type: String, default: "" },
+    },
+
+    certifications: [
+      {
+        name: { type: String, default: "" },
+        issuer: { type: String, default: "" },
+        issueYear: { type: String, default: "" },
+        credentialUrl: { type: String, default: "" },
+      },
+    ],
+
+    linkedinUrl: {
+      type: String,
+      default: "",
+    },
+
+    hoursPerWeek: {
+      type: String,
+      default: "",
+    },
+
+    govIdVerification: {
+      idType: { type: String, enum: ["aadhaar", "pancard", ""], default: "" },
+      idNumber: { type: String, default: "" },
+      snapshot: { type: String, default: "" },
+      status: { type: String, enum: ["unverified", "pending", "verified"], default: "unverified" },
+      verifiedAt: { type: Date },
+    },
+
+    billingMethod: {
+      status: { type: String, default: "in_progress" },
+      methodType: { type: String, default: "" },
+      accountDetails: { type: String, default: "" },
+    },
+
     isVerified: {
       type: Boolean,
       default: false,

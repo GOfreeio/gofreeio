@@ -67,7 +67,7 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     // 1. Validate input
     if (!email || !password) {
@@ -84,6 +84,14 @@ export const login = async (req, res) => {
       return res.status(401).json({
         success: false,
         message: "Invalid email or password",
+      });
+    }
+
+    // Role lock check: A freelancer cannot join/login as a client and vice-versa
+    if (role && user.role !== "admin" && user.role !== role) {
+      return res.status(403).json({
+        success: false,
+        message: `Role mismatch: This account is registered as a ${user.role}. A ${user.role} cannot join or log in as a ${role}.`,
       });
     }
 

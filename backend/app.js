@@ -8,6 +8,7 @@ import jobRoutes from "./src/routes/job.routes.js";
 import proposalRoutes from "./src/routes/proposal.routes.js";
 import milestoneRoutes from "./src/routes/milestone.routes.js";
 import chatRoutes from "./src/routes/chat.routes.js";
+import outsourceRoutes from "./src/routes/outsource.routes.js";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use("/api/jobs", jobRoutes);
 app.use("/api/proposals", proposalRoutes);
 app.use("/api/milestones", milestoneRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/outsource", outsourceRoutes);
 
 app.get('/', (req, res) => {
   res.json({

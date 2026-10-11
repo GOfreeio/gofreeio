@@ -15,9 +15,9 @@ export default function Chat() {
   const [sending, setSending] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // State for Admin ("We")
+  // State for Admin ("We"): Strictly communicates with Freelancers
   const isAdmin = user?.role === "admin";
-  const [adminTab, setAdminTab] = useState("client"); // "client" | "freelancer"
+  const [adminTab, setAdminTab] = useState("freelancer"); // Strictly freelancer desk
   const [adminConversations, setAdminConversations] = useState([]);
   const [activeAdminConvId, setActiveAdminConvId] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -265,44 +265,25 @@ export default function Chat() {
         <div className="container chat-container-fluid">
           {isAdmin ? (
             /* ========================================================
-               ADMIN VIEW ("WE"): MULTI-CLIENT & FREELANCER INBOX
+               ADMIN VIEW ("WE"): FREELANCER NETWORK INBOX
                ======================================================== */
             <div className="admin-chat-console">
-              {/* Left Column: Inbox List */}
+              {/* Left Column: Freelancers Inbox List */}
               <aside className="admin-inbox-sidebar">
                 <div className="admin-inbox-header">
                   <div className="admin-header-title">
-                    <h2>Project Desk Console</h2>
+                    <h2>Freelancer Network Desk</h2>
                     <span className="badge badge-blue">Admin Mode</span>
                   </div>
-
-                  {/* Tabs: Clients vs Freelancers */}
-                  <div className="admin-role-tabs">
-                    <button
-                      className={`admin-tab-btn ${adminTab === "client" ? "active" : ""}`}
-                      onClick={() => {
-                        setAdminTab("client");
-                        setActiveAdminConvId(null);
-                      }}
-                    >
-                      💼 Clients
-                    </button>
-                    <button
-                      className={`admin-tab-btn ${adminTab === "freelancer" ? "active" : ""}`}
-                      onClick={() => {
-                        setAdminTab("freelancer");
-                        setActiveAdminConvId(null);
-                      }}
-                    >
-                      ⚡ Freelancers
-                    </button>
+                  <div style={{ fontSize: "12px", color: "#64748b", margin: "4px 0 10px 0" }}>
+                    Admin direct communication with all registered freelancers
                   </div>
 
                   {/* Search Bar */}
                   <div className="admin-search-wrap">
                     <input
                       type="text"
-                      placeholder={`Search ${adminTab === "client" ? "clients" : "freelancers"}...`}
+                      placeholder="Search freelancers by name or email..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -425,9 +406,50 @@ export default function Chat() {
                 )}
               </section>
             </div>
+          ) : user?.role === "client" ? (
+            /* ========================================================
+               CLIENT VIEW: MANAGED THROUGH OUTSOURCE PORTAL
+               "We are not going to talk with Client in it"
+               ======================================================== */
+            <div
+              style={{
+                maxWidth: "680px",
+                margin: "40px auto",
+                background: "#ffffff",
+                padding: "48px 40px",
+                borderRadius: "20px",
+                border: "1px solid #e2e8f0",
+                textAlign: "center",
+                boxShadow: "0 10px 30px -5px rgba(0,0,0,0.06)",
+              }}
+            >
+              <div style={{ fontSize: "48px", marginBottom: "16px" }}>🏢</div>
+              <h2 style={{ fontSize: "24px", fontWeight: "800", color: "#0f172a", marginBottom: "10px" }}>
+                Client Project Outsourcing Desk
+              </h2>
+              <p style={{ fontSize: "15px", color: "#64748b", lineHeight: "1.6", maxWidth: "520px", margin: "0 auto 24px" }}>
+                Clients do not communicate directly with freelancers. Freeio Admin Project Managers coordinate with all vetted linguists and media professionals to manage deliverables and ensure strict quality.
+              </p>
+              <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+                <Link
+                  to="/outsource"
+                  className="btn btn-primary"
+                  style={{ padding: "12px 28px", fontSize: "15px", display: "inline-flex", alignItems: "center", gap: "8px" }}
+                >
+                  <span>Go to Project Outsource Portal →</span>
+                </Link>
+                <Link
+                  to="/client/jobs"
+                  className="btn btn-outline"
+                  style={{ padding: "12px 20px", fontSize: "14px" }}
+                >
+                  My Posted Projects
+                </Link>
+              </div>
+            </div>
           ) : (
             /* ========================================================
-               CLIENT / FREELANCER VIEW: MEDIATED WITH PROJECT DESK
+               FREELANCER VIEW: MEDIATED WITH PROJECT DESK
                ======================================================== */
             <div className="user-chat-wrapper">
               <div className="user-chat-card">
