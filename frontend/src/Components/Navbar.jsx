@@ -49,18 +49,7 @@ const Navbar = () => {
 
           {/* Desktop Navigation Links (Only shown when authenticated) */}
           <nav className="navbar-nav">
-            {!isAuthenticated ? (
-              // Unauthenticated visitor: Only show Outsource portal link
-              <>
-                <Link
-                  to="/outsource"
-                  className={`nav-link ${isActive("/outsource") ? "active" : ""}`}
-                  style={{ fontWeight: "700", color: "#2563eb" }}
-                >
-                  <span>🏢 Project Outsource</span>
-                </Link>
-              </>
-            ) : user?.role === "client" ? (
+            {!isAuthenticated ? null : user?.role === "client" ? (
               // Client navigation (NO freelancer chat desk)
               <>
                 <Link
@@ -68,7 +57,7 @@ const Navbar = () => {
                   className={`nav-link ${isActive("/outsource") ? "active" : ""}`}
                   style={{ fontWeight: "700", color: "#2563eb" }}
                 >
-                  <span>🏢 Outsource</span>
+                  <span>Outsource</span>
                 </Link>
                 <Link
                   to="/client/jobs"
@@ -97,7 +86,6 @@ const Navbar = () => {
                   className={`nav-link ${isActive("/messages") ? "active" : ""}`}
                   style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontWeight: "700" }}
                 >
-                  <span>💬</span>
                   <span>Freelancers Desk</span>
                 </Link>
                 <Link
@@ -139,7 +127,6 @@ const Navbar = () => {
                   className={`nav-link ${isActive("/messages") ? "active" : ""}`}
                   style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
                 >
-                  <span>💬</span>
                   <span>Desk Support (Admin)</span>
                 </Link>
                 <Link
@@ -148,12 +135,6 @@ const Navbar = () => {
                 >
                   My Profile
                 </Link>
-                <Link
-                  to="/outsource"
-                  className={`nav-link ${isActive("/outsource") ? "active" : ""}`}
-                >
-                  Outsource
-                </Link>
               </>
             )}
           </nav>
@@ -161,9 +142,11 @@ const Navbar = () => {
           {/* Right Action Buttons */}
           <div className="navbar-right">
             {/* Outsource Button for immediate visibility */}
-            <Link to="/outsource" className="btn-nav-outsource" title="Outsource Client Project">
-              <span>🏢 Outsource</span>
-            </Link>
+            {isAuthenticated && user?.role === "client" && (
+              <Link to="/outsource" className="btn-nav-outsource" title="Outsource Client Project">
+                <span>Outsource</span>
+              </Link>
+            )}
 
             {isAuthenticated ? (
               <div className="navbar-user-menu">
@@ -233,9 +216,6 @@ const Navbar = () => {
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
           <div className="navbar-mobile-menu">
-            <Link to="/outsource" onClick={() => setMobileMenuOpen(false)} style={{ color: "#2563eb", fontWeight: "800" }}>
-              🏢 Project Outsource
-            </Link>
             {!isAuthenticated ? (
               <>
                 <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
@@ -247,6 +227,9 @@ const Navbar = () => {
               </>
             ) : user?.role === "client" ? (
               <>
+                <Link to="/outsource" onClick={() => setMobileMenuOpen(false)} style={{ color: "#2563eb", fontWeight: "800" }}>
+                  Outsource
+                </Link>
                 <Link to="/client/jobs" onClick={() => setMobileMenuOpen(false)}>
                   My Posted Projects
                 </Link>
@@ -260,7 +243,7 @@ const Navbar = () => {
             ) : user?.role === "admin" ? (
               <>
                 <Link to="/messages" onClick={() => setMobileMenuOpen(false)} style={{ color: "#2563eb", fontWeight: "700" }}>
-                  💬 Freelancers Desk
+                  Freelancers Desk
                 </Link>
                 <Link to="/jobs" onClick={() => setMobileMenuOpen(false)}>
                   Jobs Console
@@ -278,7 +261,7 @@ const Navbar = () => {
                   My Proposals
                 </Link>
                 <Link to="/messages" onClick={() => setMobileMenuOpen(false)} style={{ color: "#2563eb", fontWeight: "700" }}>
-                  💬 Desk Support (Admin)
+                  Desk Support (Admin)
                 </Link>
                 <Link to="/profile" onClick={() => setMobileMenuOpen(false)}>
                   My Profile

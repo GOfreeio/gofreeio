@@ -90,11 +90,20 @@ export const getUserById = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
+    const isAdmin = req.user.role === 'admin';
+    if (!isAdmin && req.user.userId !== req.params.id) {
+      return res.status(403).json({
+        success: false,
+        message: 'You can only update your own profile',
+      });
+    }
+
     const {
       name,
       email,
       role,
       avatar,
+      title,
       bio,
       location,
       education,
@@ -113,8 +122,9 @@ export const updateUser = async (req, res) => {
       {
         ...(name && { name }),
         ...(email && { email }),
-        ...(role && { role }),
+        ...(isAdmin && role && { role }),
         ...(avatar !== undefined && { avatar }),
+        ...(title !== undefined && { title }),
         ...(bio !== undefined && { bio }),
         ...(location !== undefined && { location }),
         ...(education !== undefined && { education }),
@@ -124,8 +134,8 @@ export const updateUser = async (req, res) => {
         ...(hoursPerWeek !== undefined && { hoursPerWeek }),
         ...(govIdVerification !== undefined && { govIdVerification }),
         ...(billingMethod !== undefined && { billingMethod }),
-        ...(isVerified !== undefined && { isVerified }),
-        ...(isActive !== undefined && { isActive }),
+        ...(isAdmin && isVerified !== undefined && { isVerified }),
+        ...(isAdmin && isActive !== undefined && { isActive }),
       },
       { new: true, runValidators: true }
     ).select('-password');

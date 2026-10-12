@@ -33,6 +33,12 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
 
+    title: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
     bio: {
       type: String,
       default: "",

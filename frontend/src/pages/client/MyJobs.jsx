@@ -23,7 +23,7 @@ export default function MyJobs() {
           const clientId = j.client?._id || j.client;
           return user && (clientId === user._id || clientId === user.userId);
         });
-        setJobs(myJobs.length > 0 ? myJobs : data.data.slice(0, 3));
+        setJobs(myJobs);
       }
     } catch (err) {
       console.error("Failed to load client jobs", err);
@@ -60,7 +60,6 @@ export default function MyJobs() {
             <p style={{ color: "#64748b" }}>Loading your projects...</p>
           ) : jobs.length === 0 ? (
             <div style={{ background: "#ffffff", padding: "48px 24px", borderRadius: "16px", border: "1px solid #e2e8f0", textAlign: "center" }}>
-              <span style={{ fontSize: "36px" }}>📝</span>
               <h3 style={{ fontSize: "18px", color: "#111827", marginTop: "12px", marginBottom: "6px" }}>
                 No Projects Posted Yet
               </h3>

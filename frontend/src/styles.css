@@ -175,3 +175,51 @@ button {
 .font-handwritten {
   font-family: 'Caveat', cursive, sans-serif;
 }
+
+@media (max-width: 600px) {
+  .container {
+    width: 100%;
+    padding-inline: 16px;
+  }
+
+  .job-details-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  button,
+  .btn,
+  .btn-auth-action,
+  .btn-auth-submit,
+  .btn-chat-send {
+    min-width: 0;
+    max-width: 100%;
+    font-size: 14px;
+    line-height: 1.35;
+    white-space: normal;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  h1 {
+    font-size: 26px !important;
+    overflow-wrap: anywhere;
+  }
+
+  h2 {
+    overflow-wrap: anywhere;
+  }
+
+  p,
+  a,
+  label,
+  span {
+    overflow-wrap: anywhere;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}

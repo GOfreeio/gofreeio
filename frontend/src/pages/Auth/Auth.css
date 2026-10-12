@@ -562,3 +562,27 @@
     padding: 30px 20px;
   }
 }
+
+@media (max-width: 600px) {
+  .auth-form-side {
+    padding: 20px 16px;
+  }
+
+  .auth-container {
+    min-height: 100dvh;
+  }
+
+  .auth-card-body {
+    padding: 20px 0;
+  }
+
+  .auth-title {
+    font-size: 26px;
+  }
+
+  .btn-auth-submit {
+    min-height: 44px;
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+}

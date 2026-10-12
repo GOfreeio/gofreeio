@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext(null);
 
-const API_BASE = `${import.meta.env.VITE_API_URL}/api/auth`;
+const API_BASE = `${import.meta.env.VITE_API_URL || ""}/api/auth`;
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -85,7 +85,7 @@ export const AuthProvider = ({ children }) => {
       let updatedUser = { ...user, ...updates };
 
       if (user?._id) {
-        const usersApi = `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/users/${user._id}`;
+        const usersApi = `${import.meta.env.VITE_API_URL || ""}/api/users/${user._id}`;
         const res = await fetch(usersApi, {
           method: "PUT",
           headers: {
@@ -95,19 +95,19 @@ export const AuthProvider = ({ children }) => {
           body: JSON.stringify(updates),
         });
         const data = await res.json();
-        if (data.success && data.data) {
-          updatedUser = data.data;
+        if (!res.ok || !data.success || !data.data) {
+          throw new Error(data.message || "Profile update failed.");
         }
+        updatedUser = data.data;
+      } else {
+        throw new Error("You must be logged in to update your profile.");
       }
 
       setUser(updatedUser);
       localStorage.setItem("freeio_user", JSON.stringify(updatedUser));
       return { success: true, user: updatedUser };
     } catch (err) {
-      const fallbackUser = { ...user, ...updates };
-      setUser(fallbackUser);
-      localStorage.setItem("freeio_user", JSON.stringify(fallbackUser));
-      return { success: true, user: fallbackUser, offline: true };
+      return { success: false, error: err.message || "Failed to save profile." };
     }
   };
 

@@ -499,3 +499,50 @@
     height: 250px;
   }
 }
+
+@media (max-width: 600px) {
+  .chat-container-fluid {
+    padding-inline: 10px;
+  }
+
+  .admin-inbox-sidebar {
+    height: 220px;
+  }
+
+  .admin-chat-pane,
+  .user-chat-card {
+    min-width: 0;
+  }
+
+  .chat-pane-header,
+  .user-chat-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .chat-header-meta,
+  .desk-status,
+  .chat-security-tag {
+    overflow-wrap: anywhere;
+  }
+
+  .chat-input-bar,
+  .user-chat-input-bar {
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .chat-input-bar input,
+  .user-chat-input-bar input {
+    min-width: 0;
+    font-size: 16px;
+  }
+
+  .btn-chat-send {
+    flex: 0 0 auto;
+    padding: 9px 10px;
+    font-size: 13px;
+  }
+}

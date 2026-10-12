@@ -19,9 +19,8 @@ export default function About() {
             Language, Voice & Media
           </h1>
           <p className="about-subtitle">
-            Freeio is the world's premier marketplace specialized in Translation, Transcription,
-            Localization, and Dubbing. We empower global businesses, media studios, and independent
-            creators to connect with certified native linguists and voice actors across 150+ languages.
+            Freeio brings clients and freelancers together for translation, transcription,
+            localization, dubbing, and other language-focused projects.
           </p>
 
           <div className="about-cta-row">
@@ -35,37 +34,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* Key Stats Counter */}
-      <section className="about-stats-section">
-        <div className="container">
-          <div className="about-stats-grid">
-            <div className="about-stat-card">
-              <strong className="stat-number">150+</strong>
-              <span className="stat-title">Languages & Dialects</span>
-              <p className="stat-desc">From common world languages to rare regional vernaculars.</p>
-            </div>
-
-            <div className="about-stat-card">
-              <strong className="stat-number">10K+</strong>
-              <span className="stat-title">Verified Specialists</span>
-              <p className="stat-desc">Native translators, studio voice actors, and fast transcribers.</p>
-            </div>
-
-            <div className="about-stat-card">
-              <strong className="stat-number">99.4%</strong>
-              <span className="stat-title">Accuracy Rate</span>
-              <p className="stat-desc">Rigorous dual-layer proofreading and quality assurance.</p>
-            </div>
-
-            <div className="about-stat-card">
-              <strong className="stat-number">100%</strong>
-              <span className="stat-title">Escrow Protected</span>
-              <p className="stat-desc">Safe milestone payments with zero upfront risk.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Core Services Section */}
       <section className="about-services-section">
         <div className="container">
@@ -73,14 +41,14 @@ export default function About() {
             <span className="section-pretitle">OUR EXPERTISE</span>
             <h2 className="section-title">End-to-End Language & Multimedia Capabilities</h2>
             <p className="section-desc">
-              We cover every dimension of global communication with certified talent and state-of-the-art tools.
+              Explore services and submit projects through the Freeio marketplace.
             </p>
           </div>
 
           <div className="services-showcase-grid">
             <div className="service-pillar-card">
               <div className="pillar-icon" style={{ background: "#eff6ff", color: "#2563eb" }}>
-                🌐
+                Languages
               </div>
               <h3>Document & Technical Translation</h3>
               <p>
@@ -91,7 +59,7 @@ export default function About() {
 
             <div className="service-pillar-card">
               <div className="pillar-icon" style={{ background: "#f5f3ff", color: "#8b5cf6" }}>
-                🎙️
+                Audio
               </div>
               <h3>Audio & Video Transcription</h3>
               <p>
@@ -102,7 +70,7 @@ export default function About() {
 
             <div className="service-pillar-card">
               <div className="pillar-icon" style={{ background: "#fdf2f8", color: "#ec4899" }}>
-                🎭
+                Voice
               </div>
               <h3>Character Dubbing & Voiceover</h3>
               <p>
@@ -113,7 +81,7 @@ export default function About() {
 
             <div className="service-pillar-card">
               <div className="pillar-icon" style={{ background: "#f0f9ff", color: "#0284c7" }}>
-                🎮
+                Games
               </div>
               <h3>Software, App & Game Localization</h3>
               <p>
@@ -131,7 +99,7 @@ export default function About() {
           <div className="section-label-header" style={{ textAlign: "center", maxWidth: "600px", margin: "0 auto 48px" }}>
             <span className="section-pretitle">THE WORKFLOW</span>
             <h2 className="section-title">How Freeio Works</h2>
-            <p className="section-desc">Simple, transparent, and completely secure from first pitch to final delivery.</p>
+            <p className="section-desc">Create a project, review proposals, and coordinate delivery through your workspace.</p>
           </div>
 
           <div className="workflow-steps-grid">
@@ -144,19 +112,19 @@ export default function About() {
             <div className="workflow-step-card">
               <span className="step-num">02</span>
               <h4>Review Auditions & Bids</h4>
-              <p>Receive custom proposals, compare voice reel samples, and inspect verified linguist portfolios.</p>
+              <p>Review proposals submitted by freelancers for your project.</p>
             </div>
 
             <div className="workflow-step-card">
               <span className="step-num">03</span>
-              <h4>Escrow Milestone Funding</h4>
-              <p>Deposit project funds securely in escrow. Freelancers work with peace of mind knowing funds are verified.</p>
+              <h4>Agree on Project Milestones</h4>
+              <p>Discuss scope and delivery milestones with the selected freelancer.</p>
             </div>
 
             <div className="workflow-step-card">
               <span className="step-num">04</span>
               <h4>Review, Approve & Deliver</h4>
-              <p>Download your polished translations and audio files. Release payment only when 100% satisfied.</p>
+              <p>Review project deliverables and coordinate next steps with your freelancer.</p>
             </div>
           </div>
         </div>
@@ -174,7 +142,7 @@ export default function About() {
                 Ready to speak to the world?
               </h2>
               <p style={{ color: "#dbeafe", marginTop: "8px", maxWidth: "500px", fontSize: "15px" }}>
-                Join thousands of businesses and creators scaling their global impact through Freeio.
+                Create an account to post projects or submit proposals.
               </p>
             </div>
 

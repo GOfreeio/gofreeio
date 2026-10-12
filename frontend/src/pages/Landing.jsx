@@ -89,165 +89,29 @@ const languageCategories = [
   },
 ];
 
-// Top Brand Logos for Marquee Ticker
-const brandLogos = [
-  { name: "NETFLIX", symbol: "N", fontStyle: "Impact, sans-serif", color: "#E50914" },
-  { name: "Spotify", symbol: "🟢", fontStyle: "sans-serif", color: "#1DB954" },
-  { name: "duolingo", symbol: "🦉", fontStyle: "Arial Rounded MT Bold, sans-serif", color: "#58CC02" },
-  { name: "Microsoft", symbol: "⊞", fontStyle: "Segoe UI, sans-serif", color: "#00A4EF" },
-  { name: "DISNEY+", symbol: "D+", fontStyle: "Futura, sans-serif", color: "#113CCF" },
-  { name: "Google", symbol: "G", fontStyle: "Product Sans, sans-serif", color: "#4285F4" },
-  { name: "SONY", symbol: "S", fontStyle: "Georgia, serif", color: "#000000" },
-  { name: "WARNER BROS", symbol: "WB", fontStyle: "sans-serif", color: "#004DB3" },
-];
-
-// Featured Specialists Carousel Data
-const carouselSpecialists = [
-  {
-    id: 1,
-    name: "Dr. Elena Rostova",
-    role: "Certified Medical & Legal Translator",
-    languages: "Spanish ↔ English • German",
-    rating: "5.0",
-    reviews: 142,
-    rate: "$55/hr",
-    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&h=200&q=80",
-    badge: "Top Rated Linguist",
-    quote: "Accurate, culturally nuanced translations with strict adherence to medical terminology and legal protocols.",
-    stats: "2.4M Words Translated",
-  },
-  {
-    id: 2,
-    name: "Marcus Vance",
-    role: "Senior Voice Actor & Dubbing Director",
-    languages: "English (US Native) • Neutral Spanish",
-    rating: "4.9",
-    reviews: 98,
-    rate: "$75/hr",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80",
-    badge: "Studio-Grade Audio",
-    quote: "Voiced characters for over 35 anime episodes, commercial spots, and narrative video games with Pro Tools mastering.",
-    stats: "400+ Audio Projects",
-  },
-  {
-    id: 3,
-    name: "Kenji Takahashi",
-    role: "Lead Game & Software Localizer",
-    languages: "Japanese ↔ English • Korean",
-    rating: "5.0",
-    reviews: 186,
-    rate: "$65/hr",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&h=200&q=80",
-    badge: "Localization Specialist",
-    quote: "Helped Steam & mobile RPG titles achieve 4.8-star ratings in Japanese & East Asian gaming markets.",
-    stats: "65+ Games Localized",
-  },
-  {
-    id: 4,
-    name: "Amira Benali",
-    role: "Audio/Video Transcriber & Subtitler",
-    languages: "Arabic (All Dialects) • French • English",
-    rating: "4.9",
-    reviews: 114,
-    rate: "$40/hr",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80",
-    badge: "99.8% Accuracy",
-    quote: "High-speed transcription with verbatim accuracy, speaker identification, and time-coded translated SRT subtitles.",
-    stats: "1,200+ Audio Hours",
-  },
-];
-
-// Language & Media Jobs matching user requirement
-const languageJobs = [
-  {
-    id: "1",
-    title: "Spanish to English Medical & Legal Document Translation",
-    category: "Translation",
-    jobType: "Fixed Price",
-    budget: "$450 - $900",
-    budgetType: "Fixed Price",
-    posted: "Posted 1 day ago",
-    proposals: "6 proposals",
-    iconType: "translation",
-  },
-  {
-    id: "2",
-    title: "Multilingual RPG Game Localization (English to Japanese & German)",
-    category: "Localization",
-    jobType: "Fixed Price",
-    budget: "$1,800 - $3,200",
-    budgetType: "Fixed Price",
-    posted: "Posted 2 days ago",
-    proposals: "9 proposals",
-    iconType: "localization",
-  },
-  {
-    id: "3",
-    title: "Anime & Animated Series Character Dubbing in Neutral Spanish",
-    category: "Dubbing & Voiceover",
-    jobType: "Fixed Price",
-    budget: "$600 - $1,200",
-    budgetType: "Fixed Price",
-    posted: "Posted 3 days ago",
-    proposals: "14 proposals",
-    iconType: "dubbing",
-  },
-  {
-    id: "4",
-    title: "60-Minute Financial Podcast Audio Transcription with Timestamps",
-    category: "Transcription",
-    jobType: "Fixed Price",
-    budget: "$180 - $350",
-    budgetType: "Fixed Price",
-    posted: "Posted 4 days ago",
-    proposals: "11 proposals",
-    iconType: "transcription",
-  },
-];
-
 const Landing = () => {
   const navigate = useNavigate();
-  const [latestJobs, setLatestJobs] = useState(languageJobs);
-  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [latestJobs, setLatestJobs] = useState([]);
 
-  // Auto rotate carousel every 5 seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCarouselIndex((prev) => (prev + 1) % carouselSpecialists.length);
-    }, 5500);
-    return () => clearInterval(timer);
-  }, []);
-
-  // Fetch real jobs from backend if available
   useEffect(() => {
     fetch("/api/jobs")
       .then((res) => res.json())
       .then((data) => {
-        if (data && data.success && Array.isArray(data.data) && data.data.length > 0) {
-          const formatted = data.data.slice(0, 4).map((j, i) => ({
-            id: j._id,
-            title: j.title,
-            category: j.skills && j.skills[0] ? j.skills[0] : "Translation",
-            jobType: j.budgetType === "hourly" ? "Hourly" : "Fixed Price",
-            budget: j.budget ? `$${j.budget}` : "$500 - $1,000",
-            budgetType: j.budgetType === "hourly" ? "Hourly Rate" : "Fixed Price",
-            posted: "Posted recently",
-            proposals: "Proposals open",
-            iconType: i % 2 === 0 ? "translation" : "dubbing",
-          }));
-          setLatestJobs(formatted);
+        if (data?.success && Array.isArray(data.data)) {
+          setLatestJobs(data.data.slice(0, 4).map((job) => ({
+            id: job._id,
+            title: job.title,
+            category: job.skills?.[0] || "Project",
+            jobType: job.budgetType === "hourly" ? "Hourly" : "Fixed Price",
+            budget: job.budget ? `$${job.budget}` : "Budget not specified",
+            budgetType: job.budgetType === "hourly" ? "Hourly Rate" : "Fixed Price",
+            posted: job.createdAt ? `Posted ${new Date(job.createdAt).toLocaleDateString()}` : "Recently posted",
+            iconType: (job.skills || []).join(" ").toLowerCase().includes("dub") ? "dubbing" : "translation",
+          })));
         }
       })
       .catch(() => {});
   }, []);
-
-  const nextSlide = () => {
-    setCarouselIndex((prev) => (prev + 1) % carouselSpecialists.length);
-  };
-
-  const prevSlide = () => {
-    setCarouselIndex((prev) => (prev - 1 + carouselSpecialists.length) % carouselSpecialists.length);
-  };
 
   const renderJobIcon = (type) => {
     if (type === "dubbing") {
@@ -294,8 +158,6 @@ const Landing = () => {
     );
   };
 
-  const currentSpecialist = carouselSpecialists[carouselIndex];
-
   return (
     <div className="landing-page">
       <Navbar />
@@ -316,8 +178,8 @@ const Landing = () => {
             </h1>
 
             <p className="hero-subtitle">
-              Freeio connects world-class translators, transcribers, localizers, and dubbing artists
-              with global enterprises and creative studios — all in one trusted platform.
+              Freeio helps clients and freelancers connect around translation, transcription,
+              localization, and dubbing projects.
             </p>
 
             <div className="hero-cta-group">
@@ -334,32 +196,6 @@ const Landing = () => {
               </Link>
             </div>
 
-            {/* Social proof avatar stack */}
-            <div className="hero-social-proof">
-              <div className="avatar-stack">
-                <img
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&h=80&q=80"
-                  alt="Linguist avatar"
-                  className="stack-avatar"
-                />
-                <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&h=80&q=80"
-                  alt="Voice actor avatar"
-                  className="stack-avatar"
-                />
-                <img
-                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&h=80&q=80"
-                  alt="Transcriber avatar"
-                  className="stack-avatar"
-                />
-                <div className="stack-avatar stack-more">+</div>
-              </div>
-
-              <div className="proof-text">
-                <span className="proof-highlight">Join 10,000+ verified linguists & creators</span>
-                <span className="proof-sub">delivering excellence across 150+ languages.</span>
-              </div>
-            </div>
           </div>
 
           {/* Right Hero Visual with Floating Badges */}
@@ -419,36 +255,11 @@ const Landing = () => {
                 </div>
                 <div className="floating-badge-text">
                   <h4>Get It Done</h4>
-                  <p>Milestone escrow, accurate delivery, and dedicated support.</p>
+                  <p>Manage project details and delivery milestones.</p>
                 </div>
                 <span className="floating-badge-arrow" style={{ color: "#2563eb" }}>→</span>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===================== ANIMATED COMPANY LOGO TICKER ===================== */}
-      <section className="logo-marquee-section">
-        <div className="container">
-          <p className="marquee-label">
-            TRUSTED BY 5,000+ GLOBAL STUDIOS, ENTERPRISES & LOCALIZATION TEAMS
-          </p>
-        </div>
-
-        <div className="marquee-wrapper">
-          <div className="marquee-track">
-            {/* Repeat list twice for seamless infinite loop */}
-            {[...brandLogos, ...brandLogos].map((brand, idx) => (
-              <div key={idx} className="brand-item">
-                <span className="brand-symbol" style={{ color: brand.color }}>
-                  {brand.symbol}
-                </span>
-                <span className="brand-name" style={{ fontFamily: brand.fontStyle }}>
-                  {brand.name}
-                </span>
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -487,93 +298,6 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* ===================== INTERACTIVE SPECIALIST CAROUSEL ===================== */}
-      <section className="specialist-carousel-section">
-        <div className="container">
-          <div className="section-flex-header">
-            <div>
-              <span className="section-pretitle">FEATURED SPECIALISTS</span>
-              <h2 className="section-title">Meet Top-Rated Linguists & Voice Artists</h2>
-              <p className="section-desc">
-                Vetted professionals ready to translate, voiceover, transcribe, or localize your project.
-              </p>
-            </div>
-
-            <div className="carousel-controls">
-              <button onClick={prevSlide} className="carousel-btn" aria-label="Previous Specialist">
-                ←
-              </button>
-              <button onClick={nextSlide} className="carousel-btn" aria-label="Next Specialist">
-                →
-              </button>
-            </div>
-          </div>
-
-          <div className="specialist-card-showcase">
-            <div className="specialist-left">
-              <img
-                src={currentSpecialist.avatar}
-                alt={currentSpecialist.name}
-                className="specialist-avatar"
-              />
-              <span className="specialist-badge">{currentSpecialist.badge}</span>
-            </div>
-
-            <div className="specialist-info">
-              <div className="specialist-header-row">
-                <div>
-                  <h3 className="specialist-name">{currentSpecialist.name}</h3>
-                  <p className="specialist-role">{currentSpecialist.role}</p>
-                </div>
-                <div className="specialist-rate-box">
-                  <strong className="rate-num">{currentSpecialist.rate}</strong>
-                  <span className="rate-label">Starting Rate</span>
-                </div>
-              </div>
-
-              <div className="specialist-languages-tag">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="2" y1="12" x2="22" y2="12"></line>
-                </svg>
-                <span>{currentSpecialist.languages}</span>
-              </div>
-
-              <blockquote className="specialist-quote">
-                "{currentSpecialist.quote}"
-              </blockquote>
-
-              <div className="specialist-meta-row">
-                <div className="rating-pill">
-                  <span className="star-icon">★</span>
-                  <strong>{currentSpecialist.rating}</strong>
-                  <span className="review-count">({currentSpecialist.reviews} reviews)</span>
-                </div>
-
-                <div className="stats-pill">
-                  <span>{currentSpecialist.stats}</span>
-                </div>
-
-                <Link to="/jobs" className="btn btn-primary specialist-hire-btn">
-                  View Profile & Work Samples →
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Dots Indicator */}
-          <div className="carousel-dots">
-            {carouselSpecialists.map((_, i) => (
-              <span
-                key={i}
-                className={`carousel-dot ${i === carouselIndex ? "active" : ""}`}
-                onClick={() => setCarouselIndex(i)}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ===================== WHY FREEIO SECTION ===================== */}
       <section className="why-section" id="why-freeio">
         <div className="container">
@@ -592,8 +316,8 @@ const Landing = () => {
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                 </svg>
               </div>
-              <h3>Native Fluency Guaranteed</h3>
-              <p>Work with native speakers and certified linguists with cultural accuracy.</p>
+              <h3>Language-Focused Projects</h3>
+              <p>Find translation, transcription, localization, and voice projects.</p>
             </div>
 
             <div className="why-card">
@@ -603,7 +327,7 @@ const Landing = () => {
                 </svg>
               </div>
               <h3>Fast Turnaround</h3>
-              <p>Receive rapid quotes, sample auditions, and express deliveries 24/7.</p>
+              <p>Submit a proposal with your experience and proposed delivery timeline.</p>
             </div>
 
             <div className="why-card">
@@ -613,8 +337,8 @@ const Landing = () => {
                   <circle cx="9" cy="7" r="4"></circle>
                 </svg>
               </div>
-              <h3>150+ Languages</h3>
-              <p>From Spanish and French to Japanese, Arabic, Mandarin, and rare regional dialects.</p>
+              <h3>Share Your Expertise</h3>
+              <p>Describe your language pairs, specialties, and relevant project experience.</p>
             </div>
 
             <div className="why-card">
@@ -623,8 +347,8 @@ const Landing = () => {
                   <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                 </svg>
               </div>
-              <h3>Escrow Protected</h3>
-              <p>Funds are released only when you approve milestones and final files.</p>
+              <h3>Project Milestones</h3>
+              <p>Keep project scope and delivery steps clear with milestone planning.</p>
             </div>
           </div>
         </div>
@@ -646,7 +370,12 @@ const Landing = () => {
             </div>
 
             <div className="jobs-list">
-              {latestJobs.map((job) => (
+              {latestJobs.length === 0 ? (
+                <div className="jobs-empty-state">
+                  <h3>No projects are available yet</h3>
+                  <p>New client projects will appear here when they are posted.</p>
+                </div>
+              ) : latestJobs.map((job) => (
                 <div key={job.id} className="job-item-card">
                   <div className="job-item-left">
                     {renderJobIcon(job.iconType)}
@@ -656,22 +385,15 @@ const Landing = () => {
                         <span className="job-tag tag-primary">{job.category}</span>
                         <span className="job-tag tag-secondary">{job.jobType}</span>
                       </div>
-                      <div className="job-meta-row">
-                        <span>{job.posted}</span>
-                        <span className="meta-bullet">•</span>
-                        <span>{job.proposals}</span>
-                      </div>
+                      <div className="job-meta-row"><span>{job.posted}</span></div>
                     </div>
                   </div>
-
                   <div className="job-item-right">
                     <div className="job-pricing">
                       <span className="job-price-val">{job.budget}</span>
                       <span className="job-price-type">{job.budgetType}</span>
                     </div>
-                    <Link to={`/jobs/${job.id}`} className="btn-view-job">
-                      View Details
-                    </Link>
+                    <Link to={`/jobs/${job.id}`} className="btn-view-job">View Details</Link>
                   </div>
                 </div>
               ))}
@@ -688,16 +410,16 @@ const Landing = () => {
                 <div className="benefit-item">
                   <div className="benefit-check">✓</div>
                   <div className="benefit-text">
-                    <strong>100% Secure Platform</strong>
-                    <p>Your audio files, transcripts and payments are protected.</p>
+                    <strong>Project Workspace</strong>
+                    <p>Keep project briefs and proposals in one place.</p>
                   </div>
                 </div>
 
                 <div className="benefit-item">
                   <div className="benefit-check">✓</div>
                   <div className="benefit-text">
-                    <strong>Verified Native Speakers</strong>
-                    <p>Only genuine, tested translators and voice actors.</p>
+                    <strong>Freelancer Profiles</strong>
+                    <p>Review the profile details freelancers choose to share.</p>
                   </div>
                 </div>
 
@@ -712,8 +434,8 @@ const Landing = () => {
                 <div className="benefit-item">
                   <div className="benefit-check">✓</div>
                   <div className="benefit-text">
-                    <strong>Dedicated Quality Support</strong>
-                    <p>Resolution support and file quality assurance round the clock.</p>
+                    <strong>Managed Communication</strong>
+                    <p>Use the project desk to contact the Freeio team.</p>
                   </div>
                 </div>
               </div>

@@ -4,14 +4,6 @@ import Navbar from "../../Components/Navbar";
 import { useAuth } from "../../context/AuthContext";
 import "./Profile.css";
 
-const PRESET_AVATARS = [
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80",
-  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80",
-  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200&q=80",
-  "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&h=200&q=80",
-  "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&h=200&q=80",
-];
-
 const Profile = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -47,8 +39,6 @@ const Profile = () => {
 
   // Video instruction / introduction (Starts empty)
   const [videoUrl, setVideoUrl] = useState(user?.videoInstruction?.url || "");
-  const [videoFile, setVideoFile] = useState(null);
-  const [videoPreviewSrc, setVideoPreviewSrc] = useState(null);
 
   // Certifications list (Starts empty)
   const [certifications, setCertifications] = useState(
@@ -86,6 +76,8 @@ const Profile = () => {
   useEffect(() => {
     if (user) {
       if (user.name) setName(user.name);
+      if (user.title) setTitle(user.title);
+      if (user.bio) setBio(user.bio);
       if (user.avatar) setAvatar(user.avatar);
       if (user.location) setLocation(user.location);
       if (user.hoursPerWeek) setHoursPerWeek(user.hoursPerWeek);
@@ -112,35 +104,60 @@ const Profile = () => {
     let score = 0;
     if (avatar) score += 15;
     if (education.length > 0) score += 15;
-    if (videoUrl || videoPreviewSrc) score += 15;
+    if (videoUrl) score += 15;
     if (certifications.length > 0) score += 15;
     if (linkedinUrl) score += 15;
     if (hoursPerWeek) score += 10;
-    if (idSnapshot || idStatus === "verified" || idStatus === "pending") score += 15;
     return Math.min(score, 100);
   };
 
   const strength = calculateStrength();
 
   // Handle avatar upload from local file
-  const handleAvatarFile = (e) => {
+  const handleAvatarFile = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setAvatar(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+    if (!file) return;
 
-  // Video file upload handler
-  const handleVideoFile = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setVideoFile(file);
-      const url = URL.createObjectURL(file);
-      setVideoPreviewSrc(url);
+    if (!file.type.startsWith("image/")) {
+      setStatusMessage("Choose an image file for your profile photo.");
+      e.target.value = "";
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      setStatusMessage("Choose a profile photo smaller than 10 MB.");
+      e.target.value = "";
+      return;
+    }
+
+    try {
+      const image = await createImageBitmap(file);
+      const scale = Math.min(1, 512 / Math.max(image.width, image.height));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(image.width * scale));
+      canvas.height = Math.max(1, Math.round(image.height * scale));
+      canvas.getContext("2d").drawImage(image, 0, 0, canvas.width, canvas.height);
+      image.close();
+
+      let quality = 0.78;
+      let blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", quality));
+      while (blob && blob.size > 75 * 1024 && quality > 0.4) {
+        quality -= 0.1;
+        blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", quality));
+      }
+
+      if (!blob || blob.size > 90 * 1024) {
+        throw new Error("This image could not be compressed enough. Choose a smaller image.");
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => setAvatar(reader.result);
+      reader.readAsDataURL(blob);
+      setStatusMessage("");
+    } catch (error) {
+      setStatusMessage(error.message || "Could not load this image. Try another file.");
+    } finally {
+      e.target.value = "";
     }
   };
 
@@ -248,6 +265,7 @@ const Profile = () => {
 
     const updates = {
       name,
+      title,
       avatar,
       bio,
       location,
@@ -259,25 +277,18 @@ const Profile = () => {
         url: videoUrl,
         title: "Video Introduction",
       },
-      govIdVerification: {
-        idType,
-        idNumber,
-        snapshot: idSnapshot,
-        status: idStatus,
-        verifiedAt: idStatus === "verified" ? new Date() : undefined,
-      },
     };
 
     try {
       const res = await updateProfile(updates);
       if (res.success) {
-        setStatusMessage("✅ Profile successfully saved and updated!");
+        setStatusMessage("Profile saved successfully.");
         setTimeout(() => setStatusMessage(""), 4000);
       } else {
-        setStatusMessage("⚠️ Changes saved locally to your device.");
+        setStatusMessage(res.error || "Profile could not be saved. Please try again.");
       }
     } catch (err) {
-      setStatusMessage("⚠️ Saved locally.");
+      setStatusMessage(err.message || "Profile could not be saved. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -314,14 +325,13 @@ const Profile = () => {
             ================================================================= */}
         <div className="fill-later-banner">
           <div className="banner-left">
-            <span className="banner-icon">📋</span>
             <div>
               <div className="banner-title">
                 {isNewUser ? "Welcome to Freeio! Setup your profile now or later" : "Your Freelancer Profile Setup"}
               </div>
               <div className="banner-text">
                 You can fill out your profile details now, or skip and complete it later anytime at your convenience.
-                All information entered is automatically preserved. Completing your profile increases client hire rates by 85%!
+                Save your details to keep your profile current and give clients a clear picture of your experience.
               </div>
             </div>
           </div>
@@ -372,9 +382,9 @@ const Profile = () => {
         <div className="profile-strength-card">
           <div className="strength-header">
             <span className="strength-title">
-              <span>⭐ Profile Strength:</span>
+              <span>Profile Strength:</span>
               <span style={{ color: strength > 70 ? "#10b981" : "#f59e0b" }}>
-                {strength >= 80 ? "All-Star Profile" : strength >= 50 ? "Intermediate Profile" : "Getting Started"}
+                {strength >= 80 ? "Profile Complete" : strength >= 50 ? "Profile In Progress" : "Getting Started"}
               </span>
             </span>
             <span className="strength-percent">{strength}% Completed</span>
@@ -391,8 +401,8 @@ const Profile = () => {
             <span className={`strength-chip ${education.length > 0 ? "done" : "pending"}`}>
               {education.length > 0 ? "✓" : "○"} Education
             </span>
-            <span className={`strength-chip ${videoUrl || videoPreviewSrc ? "done" : "pending"}`}>
-              {videoUrl || videoPreviewSrc ? "✓" : "○"} Video Introduction
+            <span className={`strength-chip ${videoUrl ? "done" : "pending"}`}>
+              {videoUrl ? "✓" : "○"} Video Introduction
             </span>
             <span className={`strength-chip ${certifications.length > 0 ? "done" : "pending"}`}>
               {certifications.length > 0 ? "✓" : "○"} Certifications
@@ -402,9 +412,6 @@ const Profile = () => {
             </span>
             <span className={`strength-chip ${hoursPerWeek ? "done" : "pending"}`}>
               {hoursPerWeek ? "✓" : "○"} Hours per Week
-            </span>
-            <span className={`strength-chip ${idSnapshot || idStatus === "verified" ? "done" : "pending"}`}>
-              {idSnapshot || idStatus === "verified" ? "✓" : "○"} Government ID (Aadhaar/PAN)
             </span>
           </div>
         </div>
@@ -417,7 +424,7 @@ const Profile = () => {
             <div className="profile-card">
               <div className="profile-card-header">
                 <h3 className="profile-card-title">
-                  <span>📸</span> Profile Picture
+                  Profile Picture
                 </h3>
                 <span className="badge badge-green" style={{ textTransform: "capitalize" }}>
                   {user?.role || "Freelancer"}
@@ -456,19 +463,6 @@ const Profile = () => {
                   )}
                 </div>
 
-                <div className="preset-avatars-label">Or pick a sample avatar:</div>
-                <div className="preset-avatars-row">
-                  {PRESET_AVATARS.map((preset, index) => (
-                    <button
-                      key={index}
-                      type="button"
-                      className={`preset-avatar-btn ${avatar === preset ? "active" : ""}`}
-                      onClick={() => setAvatar(preset)}
-                    >
-                      <img src={preset} alt={`Preset ${index}`} />
-                    </button>
-                  ))}
-                </div>
               </div>
 
               <div className="form-field-group">
@@ -520,7 +514,7 @@ const Profile = () => {
             <div className="profile-card">
               <div className="profile-card-header">
                 <h3 className="profile-card-title">
-                  <span>⏱️</span> Hours Per Week
+                  Hours Per Week
                 </h3>
               </div>
               <p className="profile-card-subtitle" style={{ marginBottom: "16px" }}>
@@ -639,7 +633,7 @@ const Profile = () => {
               <div className="profile-card-header">
                 <div>
                   <h3 className="profile-card-title">
-                    <span>🎓</span> Education
+                    Education
                   </h3>
                   <div className="profile-card-subtitle">
                     Add your university degrees, diplomas, or linguistic qualifications.
@@ -770,7 +764,7 @@ const Profile = () => {
               <div className="profile-card-header">
                 <div>
                   <h3 className="profile-card-title">
-                    <span>🎬</span> Video Instruction / Introduction
+                    Video Instruction / Introduction
                   </h3>
                   <div className="profile-card-subtitle">
                     Record or link a 60-second video introducing yourself, your accents, and your voice.
@@ -785,49 +779,25 @@ const Profile = () => {
                   className="field-input"
                   placeholder="https://www.youtube.com/watch?v=..."
                   value={videoUrl}
-                  onChange={(e) => {
-                    setVideoUrl(e.target.value);
-                    setVideoPreviewSrc(null);
-                  }}
+                  onChange={(e) => setVideoUrl(e.target.value)}
                 />
               </div>
 
-              <div style={{ display: "flex", alignItems: "center", gap: "10px", margin: "10px 0" }}>
-                <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "700" }}>OR</span>
-                <label className="btn-add-secondary" style={{ cursor: "pointer" }}>
-                  <span>📁 Upload Video File (MP4/WebM)</span>
-                  <input
-                    type="file"
-                    accept="video/mp4,video/webm"
-                    style={{ display: "none" }}
-                    onChange={handleVideoFile}
-                  />
-                </label>
-              </div>
-
               {/* Video Player Preview */}
-              {(embedUrl || videoPreviewSrc) && (
+              {embedUrl && (
                 <div className="video-preview-container">
-                  {videoPreviewSrc ? (
-                    <video
-                      src={videoPreviewSrc}
-                      controls
-                      className="video-element"
-                    />
-                  ) : (
-                    <iframe
-                      src={embedUrl}
-                      title="Video Introduction Preview"
-                      className="video-embed-iframe"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                  )}
+                  <iframe
+                    src={embedUrl}
+                    title="Video Introduction Preview"
+                    className="video-embed-iframe"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
                 </div>
               )}
 
               <div className="video-guidance-card">
-                💡 <strong>Pro Tip for Linguists:</strong> Mention your native language, regional dialect,
+                <strong>Profile guidance:</strong> Mention your native language, regional dialect,
                 audio recording equipment, and previous translation or dubbing projects to stand out to clients.
               </div>
             </div>
@@ -837,7 +807,7 @@ const Profile = () => {
               <div className="profile-card-header">
                 <div>
                   <h3 className="profile-card-title">
-                    <span>📜</span> Certifications
+                    Certifications
                   </h3>
                   <div className="profile-card-subtitle">
                     Showcase credentials and specialized translation certificates.
@@ -962,10 +932,17 @@ const Profile = () => {
                 "appear on camera"
                 ================================================================= */}
             <div className="profile-card" id="gov-id-section">
+              <h3 className="profile-card-title">Identity Verification</h3>
+              <p className="profile-card-subtitle">
+                Identity document uploads are unavailable until secure verification storage is in place. Do not enter or upload government ID details here.
+              </p>
+            </div>
+
+            {false && <div className="profile-card" id="gov-id-legacy">
               <div className="profile-card-header">
                 <div>
                   <h3 className="profile-card-title">
-                    <span>🛡️</span> Government Issued ID Verification
+                    Government Issued ID Verification
                   </h3>
                   <div className="profile-card-subtitle">
                     Verify your identity via live camera snapshot with PAN Card or Aadhaar Card.
@@ -1004,7 +981,7 @@ const Profile = () => {
                   role="button"
                   tabIndex={0}
                 >
-                  <div className="id-type-name">🇮🇳 Aadhaar Card</div>
+                  <div className="id-type-name">Aadhaar Card</div>
                   <div className="id-type-desc">12-Digit Unique Identification Authority of India</div>
                 </div>
 
@@ -1014,7 +991,7 @@ const Profile = () => {
                   role="button"
                   tabIndex={0}
                 >
-                  <div className="id-type-name">📄 PAN Card</div>
+                  <div className="id-type-name">PAN Card</div>
                   <div className="id-type-desc">10-Character Permanent Account Number (Income Tax Dept)</div>
                 </div>
               </div>
@@ -1046,7 +1023,7 @@ const Profile = () => {
                       style={{ padding: "8px 16px", fontSize: "13px" }}
                       onClick={startCamera}
                     >
-                      📸 Open Camera to Verify
+                      Open Camera to Verify
                     </button>
                   )}
                 </div>
@@ -1104,11 +1081,11 @@ const Profile = () => {
                   <div className="snapshot-preview-card">
                     <img src={idSnapshot} alt="Captured Government ID" className="snapshot-img" />
                     <div className="snapshot-watermark">
-                      🔒 FOR FREEIO KYC IDENTITY VERIFICATION ONLY
+                      FOR FREEIO IDENTITY VERIFICATION ONLY
                     </div>
                     <div className="snapshot-actions">
                       <div style={{ fontSize: "13px", color: "#047857", fontWeight: "700" }}>
-                        ✓ {idType === "aadhaar" ? "Aadhaar" : "PAN"} Card Captured & Encrypted
+                        ✓ {idType === "aadhaar" ? "Aadhaar" : "PAN"} Card Captured
                       </div>
                       <div style={{ display: "flex", gap: "8px" }}>
                         <button
@@ -1147,7 +1124,7 @@ const Profile = () => {
                   </label>
                 </div>
               </div>
-            </div>
+            </div>}
 
             {/* =================================================================
                 8. Billing Method Section
@@ -1157,7 +1134,7 @@ const Profile = () => {
               <div className="profile-card-header">
                 <div>
                   <h3 className="profile-card-title">
-                    <span>💳</span> Billing & Payout Methods
+                    Billing & Payout Methods
                   </h3>
                   <div className="profile-card-subtitle">
                     Manage where your earnings and project payouts are transferred.
@@ -1165,13 +1142,12 @@ const Profile = () => {
                 </div>
 
                 <div className="billing-in-progress-badge">
-                  <span>⚡ In Progress (Coming Soon)</span>
+                  <span>In Progress (Coming Soon)</span>
                 </div>
               </div>
 
               {/* Informational Box */}
               <div className="billing-notice-box">
-                <span style={{ fontSize: "22px" }}>ℹ️</span>
                 <div>
                   <strong style={{ color: "#92400e", fontSize: "14px" }}>
                     Payment & Payout Gateways are currently in test-mode deployment.
@@ -1180,61 +1156,6 @@ const Profile = () => {
                     Bank account transfers, UPI payouts, and escrow releases are undergoing regulatory compliance audits.
                     Once you complete your first client milestone, payout release options will be unlocked.
                   </p>
-                </div>
-              </div>
-
-              {/* Mock Payment Method Cards (Just for show) */}
-              <div className="billing-methods-grid">
-                <div className="billing-method-card">
-                  <div>
-                    <div style={{ fontSize: "22px", marginBottom: "6px" }}>🏦</div>
-                    <div style={{ fontWeight: "700", fontSize: "14px", color: "#0f172a" }}>
-                      Direct Bank Transfer
-                    </div>
-                    <div style={{ fontSize: "12px", color: "#64748b", marginTop: "2px" }}>
-                      IMPS / NEFT / RTGS (Indian Banks)
-                    </div>
-                  </div>
-                  <span className="method-tag-progress">In Progress</span>
-                </div>
-
-                <div className="billing-method-card">
-                  <div>
-                    <div style={{ fontSize: "22px", marginBottom: "6px" }}>📱</div>
-                    <div style={{ fontWeight: "700", fontSize: "14px", color: "#0f172a" }}>
-                      UPI / VPA Instant
-                    </div>
-                    <div style={{ fontSize: "12px", color: "#64748b", marginTop: "2px" }}>
-                      Google Pay, PhonePe, Paytm
-                    </div>
-                  </div>
-                  <span className="method-tag-progress">In Progress</span>
-                </div>
-
-                <div className="billing-method-card">
-                  <div>
-                    <div style={{ fontSize: "22px", marginBottom: "6px" }}>🌐</div>
-                    <div style={{ fontWeight: "700", fontSize: "14px", color: "#0f172a" }}>
-                      PayPal & Wire
-                    </div>
-                    <div style={{ fontSize: "12px", color: "#64748b", marginTop: "2px" }}>
-                      USD, EUR, GBP Multi-currency
-                    </div>
-                  </div>
-                  <span className="method-tag-progress">In Progress</span>
-                </div>
-
-                <div className="billing-method-card">
-                  <div>
-                    <div style={{ fontSize: "22px", marginBottom: "6px" }}>💳</div>
-                    <div style={{ fontWeight: "700", fontSize: "14px", color: "#0f172a" }}>
-                      Credit / Debit Card
-                    </div>
-                    <div style={{ fontSize: "12px", color: "#64748b", marginTop: "2px" }}>
-                      Visa, Mastercard, RuPay
-                    </div>
-                  </div>
-                  <span className="method-tag-progress">In Progress</span>
                 </div>
               </div>
 
@@ -1279,14 +1200,11 @@ const Profile = () => {
                     }}
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div style={{ fontSize: "36px", marginBottom: "12px" }}>🚧</div>
                     <h3 style={{ fontSize: "20px", fontWeight: "800", color: "#0f172a", marginBottom: "8px" }}>
                       Billing Integration In Progress
                     </h3>
                     <p style={{ fontSize: "14px", color: "#64748b", lineHeight: "1.5", marginBottom: "20px" }}>
-                      Our automated payout gateway is currently undergoing banking integration audits.
-                      You do not need to link a bank account right now — your earnings will be safely held in
-                      your secure Freeio wallet balance.
+                      Payment and payout processing is not available in Freeio yet. No bank or card details are collected here.
                     </p>
                     <button
                       type="button"
@@ -1306,7 +1224,6 @@ const Profile = () => {
         {/* Bottom Sticky Action Bar */}
         <div className="profile-bottom-bar">
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            <span style={{ fontSize: "20px" }}>💾</span>
             <div>
               <div style={{ fontWeight: "700", fontSize: "14px", color: "#0f172a" }}>
                 Ready to save your progress?

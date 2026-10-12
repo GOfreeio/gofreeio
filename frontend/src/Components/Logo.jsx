@@ -13,14 +13,17 @@ const Logo = ({ variant = "dark", size = "normal" }) => {
   return (
     <Link
       to="/"
+      className="freeio-logo"
       style={{
         display: "inline-flex",
         alignItems: "center",
+        flexShrink: 0,
+        whiteSpace: "nowrap",
         textDecoration: "none",
         fontFamily: "'Plus Jakarta Sans', sans-serif",
-        fontSize,
+        fontSize: "var(--freeio-logo-size, " + fontSize + ")",
         fontWeight: 800,
-        letterSpacing: "-1.3px",
+        letterSpacing: "-0.8px",
         lineHeight: 1,
       }}
     >

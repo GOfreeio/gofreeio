@@ -523,8 +523,57 @@
 }
 
 @media (max-width: 600px) {
+  .profile-container {
+    padding: 20px 16px;
+  }
+
+  .profile-card,
+  .profile-strength-card {
+    padding: 18px 16px;
+    border-radius: 10px;
+  }
+
+  .profile-card-header,
+  .strength-header {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .profile-card-title {
+    font-size: 16px;
+  }
+
+  .strength-title {
+    flex-wrap: wrap;
+    font-size: 14px;
+  }
+
+  .banner-actions,
+  .avatar-action-btns {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .btn-fill-later,
+  .btn-save-top,
+  .btn-upload-avatar {
+    max-width: 100%;
+    font-size: 13px;
+    padding: 9px 12px;
+  }
+
   .form-inline-grid {
     grid-template-columns: 1fr;
+  }
+
+  .id-type-selector-row {
+    flex-direction: column;
+  }
+
+  .snapshot-actions {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 

@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
 import { useAuth } from "../../context/AuthContext";
 
 export default function FreelancerDashboard() {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
+  const [proposalCount, setProposalCount] = useState(null);
+
+  useEffect(() => {
+    if (!token) return;
+
+    fetch("/api/proposals/my", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.data)) {
+          setProposalCount(data.data.length);
+        }
+      })
+      .catch(() => {});
+  }, [token]);
 
   return (
     <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
@@ -26,7 +42,7 @@ export default function FreelancerDashboard() {
                 Freelancer Profile
               </span>
               <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#111827" }}>
-                Welcome back, {user?.name || "Freelancer"} 🚀
+                Welcome back, {user?.name || "Freelancer"}
               </h1>
               <p style={{ color: "#64748b", marginTop: "4px" }}>
                 Track your active proposals, client messages, and ongoing project deliverables.
@@ -35,7 +51,7 @@ export default function FreelancerDashboard() {
 
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
               <Link to="/profile" className="btn btn-outline" style={{ background: "#eff6ff", borderColor: "#93c5fd", color: "#2563eb" }}>
-                <span>✏️ My Profile Setup</span>
+                <span>My Profile Setup</span>
               </Link>
               <Link to="/freelancer/proposals" className="btn btn-outline">
                 View My Proposals
@@ -76,7 +92,7 @@ export default function FreelancerDashboard() {
                 boxShadow: "0 2px 6px rgba(0,0,0,0.06)",
               }}
             >
-              🛡️
+              ✓
             </div>
             <div>
               <div style={{ fontWeight: "800", color: "#065f46", fontSize: "16px" }}>
@@ -97,31 +113,14 @@ export default function FreelancerDashboard() {
           </Link>
         </div>
 
-        {/* Quick Stats */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px", marginBottom: "32px" }}>
-          <div style={{ background: "#fff", padding: "20px", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
-            <span style={{ fontSize: "13px", color: "#64748b", fontWeight: "600" }}>Active Proposals</span>
-            <div style={{ fontSize: "28px", fontWeight: "800", color: "#2563eb", marginTop: "4px" }}>4</div>
-            <span style={{ fontSize: "12px", color: "#10b981", fontWeight: "600" }}>● Under review by clients</span>
+        <div style={{ maxWidth: "340px", background: "#fff", padding: "20px", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
+          <span style={{ fontSize: "13px", color: "#64748b", fontWeight: "600" }}>Your proposals</span>
+          <div style={{ fontSize: "28px", fontWeight: "800", color: "#2563eb", marginTop: "4px" }}>
+            {proposalCount === null ? "—" : proposalCount}
           </div>
-
-          <div style={{ background: "#fff", padding: "20px", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
-            <span style={{ fontSize: "13px", color: "#64748b", fontWeight: "600" }}>Active Contracts</span>
-            <div style={{ fontSize: "28px", fontWeight: "800", color: "#111827", marginTop: "4px" }}>2</div>
-            <span style={{ fontSize: "12px", color: "#64748b" }}>Due in 5 days</span>
-          </div>
-
-          <div style={{ background: "#fff", padding: "20px", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
-            <span style={{ fontSize: "13px", color: "#64748b", fontWeight: "600" }}>Total Earnings</span>
-            <div style={{ fontSize: "28px", fontWeight: "800", color: "#10b981", marginTop: "4px" }}>$3,850</div>
-            <span style={{ fontSize: "12px", color: "#64748b" }}>Paid directly to wallet</span>
-          </div>
-
-          <div style={{ background: "#fff", padding: "20px", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
-            <span style={{ fontSize: "13px", color: "#64748b", fontWeight: "600" }}>Profile Rating</span>
-            <div style={{ fontSize: "28px", fontWeight: "800", color: "#f59e0b", marginTop: "4px" }}>5.0 ★</div>
-            <span style={{ fontSize: "12px", color: "#64748b" }}>From 12 client reviews</span>
-          </div>
+          <Link to="/freelancer/proposals" style={{ fontSize: "13px", color: "#2563eb", fontWeight: "600" }}>
+            View proposal activity
+          </Link>
         </div>
       </div>
     </div>

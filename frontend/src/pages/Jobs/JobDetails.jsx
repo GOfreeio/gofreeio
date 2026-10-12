@@ -3,41 +3,6 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
 import { useAuth } from "../../context/AuthContext";
 
-const mockFallbackJobs = {
-  "1": {
-    _id: "1",
-    title: "Spanish to English Medical & Legal Document Translation",
-    description: "We require a certified translator to translate medical clinical research summaries and consent documents from Castilian Spanish to US English. Requires familiarity with medical terminology, HIPAA standards, and accurate formatting. Source files are provided in DOCX (approx 8,500 words).",
-    skills: ["Translation", "Spanish", "English", "Medical Translation", "Legal Translation"],
-    budget: 650,
-    budgetType: "fixed",
-    deadline: "2026-10-15T00:00:00.000Z",
-    status: "open",
-    client: {
-      name: "BioHealth Global Research",
-      email: "research@biohealth.org",
-      avatar: "",
-    },
-    createdAt: "2026-09-24T10:00:00.000Z",
-  },
-  "2": {
-    _id: "2",
-    title: "Multilingual RPG Game Localization (English to Japanese & German)",
-    description: "Seeking experienced video game localizers to adapt UI dialogue, character lore, skill trees, and quest logs for a dark fantasy RPG coming to Steam and Nintendo Switch. Must preserve emotional tone, character nuance, and fantasy idioms.",
-    skills: ["Localization", "Japanese", "German", "Game Localization", "Creative Writing"],
-    budget: 2400,
-    budgetType: "fixed",
-    deadline: "2026-10-30T00:00:00.000Z",
-    status: "open",
-    client: {
-      name: "Pixel Forge Interactive",
-      email: "producers@pixelforge.io",
-      avatar: "",
-    },
-    createdAt: "2026-09-25T14:30:00.000Z",
-  },
-};
-
 export default function JobDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -81,25 +46,10 @@ export default function JobDetails() {
           fetchJobProposals(data.data._id);
         }
       } else {
-        // Fallback to sample mock job if not found in db
-        const fallback = mockFallbackJobs[id] || {
-          _id: id,
-          title: "Translation & Audio Dubbing Project",
-          description: "High-priority language localization project requiring native fluency, prompt delivery, and studio-grade audio recording.",
-          skills: ["Translation", "Dubbing", "Voice Acting"],
-          budget: 500,
-          budgetType: "fixed",
-          deadline: new Date(Date.now() + 86400000 * 7).toISOString(),
-          status: "open",
-          client: { name: "Global Media Studio", email: "contact@globalmedia.com" },
-        };
-        setJob(fallback);
-        setBidAmount(String(fallback.budget));
+        setErrorMessage(data.message || "This project could not be found.");
       }
     } catch (err) {
-      const fallback = mockFallbackJobs[id] || mockFallbackJobs["1"];
-      setJob(fallback);
-      setBidAmount(String(fallback.budget));
+      setErrorMessage("Could not load this project. Check your connection and try again.");
     } finally {
       setLoading(false);
     }
@@ -236,7 +186,7 @@ export default function JobDetails() {
       <div style={{ minHeight: "100vh", backgroundColor: "#f8fafc" }}>
         <Navbar />
         <div className="container" style={{ padding: "80px 0", textAlign: "center" }}>
-          <h2>Project Not Found</h2>
+          <h2>{errorMessage || "Project Not Found"}</h2>
           <Link to="/jobs" className="btn btn-primary" style={{ marginTop: "16px" }}>
             Browse All Jobs
           </Link>
@@ -261,7 +211,7 @@ export default function JobDetails() {
             </Link>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1.65fr 1fr", gap: "36px", alignItems: "start" }}>
+          <div className="job-details-grid" style={{ display: "grid", gridTemplateColumns: "1.65fr 1fr", gap: "36px", alignItems: "start" }}>
             {/* Left Column: Job Info */}
             <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
               {/* Job Header Card */}
@@ -461,7 +411,6 @@ export default function JobDetails() {
 
                   {proposalSuccess ? (
                     <div style={{ background: "#ecfdf5", border: "1px solid #a7f3d0", padding: "20px", borderRadius: "12px", textAlign: "center" }}>
-                      <span style={{ fontSize: "28px" }}>🎉</span>
                       <h4 style={{ color: "#065f46", fontSize: "16px", fontWeight: "700", marginTop: "8px" }}>
                         Proposal Submitted!
                       </h4>
@@ -603,18 +552,13 @@ export default function JobDetails() {
                   </div>
                   <div>
                     <strong style={{ fontSize: "15px", color: "#111827", display: "block" }}>
-                      {job.client?.name || "Verified Client"}
+                      {job.client?.name || "Client"}
                     </strong>
-                    <span style={{ fontSize: "12px", color: "#10b981", fontWeight: "600" }}>
-                      ● Payment Method Verified
-                    </span>
                   </div>
                 </div>
 
                 <div style={{ display: "flex", flexDirection: "column", gap: "8px", fontSize: "13px", color: "#64748b" }}>
-                  <div>🛡️ 100% Escrow Milestone Protection</div>
-                  <div>⚡ Fast Communication Guarantee</div>
-                  <div>📍 Location: {job.client?.location || "Verified International Client"}</div>
+                  {job.client?.location && <div>Location: {job.client.location}</div>}
                 </div>
               </div>
             </div>

@@ -103,7 +103,7 @@ const Register = () => {
             <div className="auth-title-box">
               <h1 className="auth-title">Create an account</h1>
               <p className="auth-subtitle">
-                Join Freeio to find top-tier projects or hire verified freelance professionals.
+                Create an account to post projects or find work in language services.
               </p>
             </div>
 
@@ -322,49 +322,6 @@ const Register = () => {
               </button>
             </form>
 
-            <div className="auth-divider">
-              <span>Or sign up with</span>
-            </div>
-
-            <div className="social-login-grid">
-              <button
-                type="button"
-                className="btn-social-auth"
-                onClick={() => setErrorMessage("Social signup is simulated for demonstration.")}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24">
-                  <path
-                    fill="#4285F4"
-                    d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
-                  />
-                  <path
-                    fill="#34A853"
-                    d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.26v3.15C3.26 21.36 7.36 24 12 24z"
-                  />
-                  <path
-                    fill="#FBBC05"
-                    d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.26C.46 8.16 0 9.99 0 12s.46 3.84 1.26 5.42l4.02-3.15z"
-                  />
-                  <path
-                    fill="#EA4335"
-                    d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.26 6.58l4.02 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
-                  />
-                </svg>
-                <span>Google</span>
-              </button>
-
-              <button
-                type="button"
-                className="btn-social-auth"
-                onClick={() => setErrorMessage("Social signup is simulated for demonstration.")}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="#111827">
-                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
-                </svg>
-                <span>GitHub</span>
-              </button>
-            </div>
-
             <p className="auth-switch-text">
               Already have an account?
               <Link to="/login">Log in</Link>
@@ -380,7 +337,7 @@ const Register = () => {
         <div className="auth-showcase-side">
           <div>
             <div className="showcase-pill">
-              <span>✦ The #1 Freelance Network</span>
+              <span>Language and media project network</span>
             </div>
           </div>
 
@@ -394,36 +351,18 @@ const Register = () => {
               Whether you are an ambitious business building groundbreaking products or a specialist looking for freedom, Freeio provides the tools to succeed.
             </p>
 
-            <div className="showcase-testimonial">
-              <div className="testimonial-stars">★★★★★</div>
-              <p className="testimonial-quote">
-                "Finding verified remote clients who value high-quality design was tough until I joined Freeio. Now I manage consistent projects every month."
-              </p>
-              <div className="testimonial-user">
-                <img
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&h=100&q=80"
-                  alt="Freelancer avatar"
-                  className="testimonial-avatar"
-                />
-                <div>
-                  <h4 className="testimonial-name">Elena Rostova</h4>
-                  <span className="testimonial-role">Senior UI/UX Designer</span>
-                </div>
-              </div>
-            </div>
-
             <div className="showcase-features">
               <div className="showcase-feature-item">
                 <span className="showcase-check-icon">✓</span>
-                <span>Fast & Simple Onboarding (Zero Setup Fees)</span>
+                <span>Create a client or freelancer account</span>
               </div>
               <div className="showcase-feature-item">
                 <span className="showcase-check-icon">✓</span>
-                <span>Direct Client-to-Freelancer Messaging</span>
+                <span>Build a profile with your own details</span>
               </div>
               <div className="showcase-feature-item">
                 <span className="showcase-check-icon">✓</span>
-                <span>Milestone-Based Secure Escrow Contracts</span>
+                <span>Explore project and proposal workflows</span>
               </div>
             </div>
           </div>

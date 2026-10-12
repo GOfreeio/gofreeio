@@ -106,7 +106,6 @@ export default function MyProposals() {
             <p style={{ color: "#64748b" }}>Loading your proposals...</p>
           ) : proposals.length === 0 ? (
             <div style={{ background: "#ffffff", padding: "48px 24px", borderRadius: "16px", border: "1px solid #e2e8f0", textAlign: "center" }}>
-              <span style={{ fontSize: "36px" }}>📂</span>
               <h3 style={{ fontSize: "18px", color: "#111827", marginTop: "12px", marginBottom: "6px" }}>
                 No Proposals Submitted Yet
               </h3>

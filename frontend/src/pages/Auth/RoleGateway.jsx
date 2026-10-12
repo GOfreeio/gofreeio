@@ -70,7 +70,9 @@ const RoleGateway = () => {
       if (res.success) {
         setSuccessMessage("Sign in successful! Redirecting to workspace...");
         setTimeout(() => {
-          if (res.user?.role === "client") {
+          if (res.user?.role === "admin") {
+            navigate("/messages");
+          } else if (res.user?.role === "client") {
             navigate("/client/dashboard");
           } else {
             navigate("/freelancer/dashboard");
@@ -113,7 +115,7 @@ const RoleGateway = () => {
         email: registerData.email.trim(),
         password: registerData.password,
         role: selectedRole,
-        location: registerData.location.trim() || "Remote",
+        location: registerData.location.trim(),
       });
 
       if (res.success) {
@@ -133,24 +135,6 @@ const RoleGateway = () => {
       setErrorMessage("Could not connect to the server.");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fillDemoAccount = (role) => {
-    if (role === "freelancer") {
-      setSelectedRole("freelancer");
-      setLoginData({
-        email: "sarah.linguist@example.com",
-        password: "password123",
-        rememberMe: true,
-      });
-    } else {
-      setSelectedRole("client");
-      setLoginData({
-        email: "alex.techcorp@example.com",
-        password: "password123",
-        rememberMe: true,
-      });
     }
   };
 
@@ -178,7 +162,6 @@ const RoleGateway = () => {
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <span style={{ fontSize: "20px" }}>👋</span>
                 <div>
                   <strong style={{ color: "#065f46" }}>You are currently logged in as {user?.name}</strong>
                   <div style={{ fontSize: "13px", color: "#047857" }}>
@@ -212,7 +195,7 @@ const RoleGateway = () => {
           {step === "select_role" ? (
             <div className="gateway-step-role">
               <div className="gateway-header-center">
-                <span className="gateway-badge">✨ Getting Started</span>
+                <span className="gateway-badge">Getting Started</span>
                 <h1 className="gateway-title">
                   Join as a Freelancer or as a Client
                 </h1>
@@ -248,30 +231,10 @@ const RoleGateway = () => {
                     <h2 className="role-card-title">As a Freelancer</h2>
                     <div className="role-card-tagline">Work and get paid</div>
                     <p className="role-card-desc">
-                      Apply to global translation, transcription, localization & dubbing jobs, showcase your verified portfolio, and receive guaranteed payouts.
+                      Browse translation, transcription, localization, and dubbing jobs, then showcase your experience to clients.
                     </p>
                   </div>
 
-                  <ul className="role-feature-bullets">
-                    <li>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                      <span>Find top projects and submit proposals</span>
-                    </li>
-                    <li>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                      <span>Government ID verification badge (Aadhaar/PAN)</span>
-                    </li>
-                    <li>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                      <span>Secure milestone payments & escrow protection</span>
-                    </li>
-                  </ul>
                 </div>
 
                 {/* Option 2: Client */}
@@ -301,53 +264,10 @@ const RoleGateway = () => {
                     <h2 className="role-card-title">As a Client</h2>
                     <div className="role-card-tagline">Post job and hire</div>
                     <p className="role-card-desc">
-                      Post language & creative media contracts, review quotes from vetted professionals, and manage project milestones with zero hassle.
+                      Post a language or media project, review freelancer proposals, and coordinate delivery.
                     </p>
                   </div>
 
-                  <ul className="role-feature-bullets">
-                    <li>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                      <span>Post a job in less than 2 minutes</span>
-                    </li>
-                    <li>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                      <span>Direct chat, video instructions & reviews</span>
-                    </li>
-                    <li>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                      <span>Release funds only when 100% satisfied</span>
-                    </li>
-                  </ul>
-
-                  <div style={{ marginTop: "14px", borderTop: "1px dashed #e2e8f0", paddingTop: "12px" }}>
-                    <Link
-                      to="/outsource"
-                      className="btn btn-outline"
-                      style={{
-                        width: "100%",
-                        fontSize: "12.5px",
-                        padding: "8px 12px",
-                        background: "#f0fdf4",
-                        color: "#16a34a",
-                        borderColor: "#86efac",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: "6px",
-                        fontWeight: "700",
-                      }}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <span>🏢 Outsource Directly (Client Form) →</span>
-                    </Link>
-                  </div>
                 </div>
               </div>
 
@@ -364,10 +284,6 @@ const RoleGateway = () => {
                   </span>
                 </button>
 
-                <div className="gateway-guest-note">
-                  Need to outsource a project directly?{" "}
-                  <Link to="/outsource">Submit Client Outsource Request →</Link>
-                </div>
               </div>
             </div>
           ) : (
@@ -386,7 +302,7 @@ const RoleGateway = () => {
                 </button>
 
                 <div className={`role-pill-badge ${selectedRole}`}>
-                  {selectedRole === "freelancer" ? "💼 As Freelancer" : "🏢 As Client"}
+                  {selectedRole === "freelancer" ? "As Freelancer" : "As Client"}
                 </div>
               </div>
 
@@ -426,7 +342,7 @@ const RoleGateway = () => {
                     : "Log in to manage jobs, review proposals, and hire talent."
                   : selectedRole === "freelancer"
                   ? "Sign up to start working. You can fill your profile now or later!"
-                  : "Sign up to start posting jobs and hiring verified professionals."}
+                  : "Sign up to post projects and review freelancer proposals."}
               </p>
 
               {errorMessage && (
@@ -673,26 +589,6 @@ const RoleGateway = () => {
                 </form>
               )}
 
-              {/* Demo Accounts Helper */}
-              <div className="demo-accounts-box">
-                <div className="demo-accounts-title">Quick test login with demo credentials</div>
-                <div className="demo-account-buttons">
-                  <button
-                    type="button"
-                    className="btn-demo-chip"
-                    onClick={() => fillDemoAccount("freelancer")}
-                  >
-                    💼 Demo Freelancer
-                  </button>
-                  <button
-                    type="button"
-                    className="btn-demo-chip"
-                    onClick={() => fillDemoAccount("client")}
-                  >
-                    🏢 Demo Client
-                  </button>
-                </div>
-              </div>
             </div>
           )}
         </div>

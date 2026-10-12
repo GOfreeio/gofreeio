@@ -230,7 +230,6 @@ export default function Chat() {
         <Navbar />
         <div className="container" style={{ padding: "80px 0", textAlign: "center" }}>
           <div style={{ maxWidth: "440px", margin: "0 auto", background: "#fff", padding: "40px", borderRadius: "16px", border: "1px solid #e2e8f0" }}>
-            <span style={{ fontSize: "40px" }}>💬</span>
             <h2 style={{ fontSize: "22px", fontWeight: "800", color: "#111827", marginTop: "12px", marginBottom: "8px" }}>
               Freeio Project Desk
             </h2>
@@ -358,7 +357,7 @@ export default function Chat() {
                       </div>
 
                       <div className="chat-security-tag">
-                        🔒 Platform-Mediated Channel
+                        Platform-Mediated Channel
                       </div>
                     </div>
 
@@ -423,7 +422,6 @@ export default function Chat() {
                 boxShadow: "0 10px 30px -5px rgba(0,0,0,0.06)",
               }}
             >
-              <div style={{ fontSize: "48px", marginBottom: "16px" }}>🏢</div>
               <h2 style={{ fontSize: "24px", fontWeight: "800", color: "#0f172a", marginBottom: "10px" }}>
                 Client Project Outsourcing Desk
               </h2>
@@ -466,13 +464,13 @@ export default function Chat() {
                         <span className="badge badge-blue">Official Management</span>
                       </div>
                       <span className="desk-status">
-                        🟢 Active & Mediated • Typically replies within minutes
+                        Active & Mediated
                       </span>
                     </div>
                   </div>
 
                   <div className="mediated-badge-box">
-                    <span>🛡️ Direct client-to-freelancer contact is disabled</span>
+                    <span>Direct client-to-freelancer contact is disabled</span>
                   </div>
                 </div>
 
@@ -484,7 +482,7 @@ export default function Chat() {
                   <span>
                     {user?.role === "client"
                       ? "All project specifications, translation quotes, milestones, and deliverables are managed directly with your Freeio Project Manager."
-                      : "Receive verified task guidelines, ask language & pronunciation questions, and submit milestone draft deliverables to the Freeio operations team."}
+                      : "Ask language and pronunciation questions, and share milestone drafts with the Freeio operations team."}
                   </span>
                 </div>
 
