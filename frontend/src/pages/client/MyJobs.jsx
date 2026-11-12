@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
 import { useAuth } from "../../context/AuthContext";
+import { apiUrl } from "../../utils/api";
 
 export default function MyJobs() {
   const { user, token, isAuthenticated } = useAuth();
@@ -15,7 +16,7 @@ export default function MyJobs() {
   const fetchClientJobs = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/jobs");
+      const res = await fetch(apiUrl("/api/jobs"));
       const data = await res.json();
       if (res.ok && data.success && Array.isArray(data.data)) {
         // Filter jobs posted by this client if user ID matches

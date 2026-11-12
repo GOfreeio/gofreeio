@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
 import { useAuth } from "../../context/AuthContext";
+import { apiUrl } from "../../utils/api";
 
 const popularTags = [
   "Spanish", "French", "German", "Japanese", "Mandarin", "Arabic", "Portuguese",
@@ -98,7 +99,7 @@ export default function CreateJob() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/jobs", {
+      const res = await fetch(apiUrl("/api/jobs"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

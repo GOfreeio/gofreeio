@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
 import { useAuth } from "../../context/AuthContext";
+import { apiUrl } from "../../utils/api";
 
 export default function MyProposals() {
   const { user, token, isAuthenticated } = useAuth();
@@ -20,7 +21,7 @@ export default function MyProposals() {
   const fetchProposals = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/proposals/my", {
+      const res = await fetch(apiUrl("/api/proposals/my"), {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -41,7 +42,7 @@ export default function MyProposals() {
   const handleWithdraw = async (id) => {
     if (!window.confirm("Are you sure you want to withdraw this proposal?")) return;
     try {
-      const res = await fetch(`/api/proposals/${id}/withdraw`, {
+      const res = await fetch(apiUrl(`/api/proposals/${id}/withdraw`), {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { apiUrl } from "../utils/api";
 
 const AuthContext = createContext(null);
 
-const API_BASE = `${import.meta.env.VITE_API_URL || ""}/api/auth`;
+const API_BASE = apiUrl("/api/auth");
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -85,7 +86,7 @@ export const AuthProvider = ({ children }) => {
       let updatedUser = { ...user, ...updates };
 
       if (user?._id) {
-        const usersApi = `${import.meta.env.VITE_API_URL || ""}/api/users/${user._id}`;
+        const usersApi = apiUrl(`/api/users/${user._id}`);
         const res = await fetch(usersApi, {
           method: "PUT",
           headers: {

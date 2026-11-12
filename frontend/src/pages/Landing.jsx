@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import Logo from "../Components/Logo";
+import { apiUrl } from "../utils/api";
 import "./Landing.css";
 
 // Language & Media focused categories
@@ -94,7 +95,7 @@ const Landing = () => {
   const [latestJobs, setLatestJobs] = useState([]);
 
   useEffect(() => {
-    fetch("/api/jobs")
+    fetch(apiUrl("/api/jobs"))
       .then((res) => res.json())
       .then((data) => {
         if (data?.success && Array.isArray(data.data)) {

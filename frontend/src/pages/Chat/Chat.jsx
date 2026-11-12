@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
 import { useAuth } from "../../context/AuthContext";
+import { apiUrl } from "../../utils/api";
 import "./Chat.css";
 
 export default function Chat() {
@@ -84,7 +85,7 @@ export default function Chat() {
     setLoading(true);
     setErrorMessage("");
     try {
-      const res = await fetch("/api/chat/my-conversation", {
+      const res = await fetch(apiUrl("/api/chat/my-conversation"), {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -108,7 +109,7 @@ export default function Chat() {
   const fetchAdminConversations = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/chat/admin/conversations?role=${adminTab}`, {
+      const res = await fetch(apiUrl(`/api/chat/admin/conversations?role=${adminTab}`), {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -135,7 +136,7 @@ export default function Chat() {
   // 3. Fetch messages for a conversation
   const fetchMessages = async (convId) => {
     try {
-      const res = await fetch(`/api/chat/messages/${convId}`, {
+      const res = await fetch(apiUrl(`/api/chat/messages/${convId}`), {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -144,7 +145,7 @@ export default function Chat() {
       if (res.ok && data.success && Array.isArray(data.data)) {
         setMessages((prev) => mergeMessages(prev, data.data));
         // Mark as read
-        fetch(`/api/chat/messages/${convId}/read`, {
+        fetch(apiUrl(`/api/chat/messages/${convId}/read`), {
           method: "PATCH",
           headers: { Authorization: `Bearer ${token}` },
         }).catch(() => {});
@@ -157,7 +158,7 @@ export default function Chat() {
   // 4. Background polling
   const pollMessages = async (convId) => {
     try {
-      const res = await fetch(`/api/chat/messages/${convId}`, {
+      const res = await fetch(apiUrl(`/api/chat/messages/${convId}`), {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -180,7 +181,7 @@ export default function Chat() {
     setSending(true);
 
     try {
-      const res = await fetch("/api/chat/messages", {
+      const res = await fetch(apiUrl("/api/chat/messages"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

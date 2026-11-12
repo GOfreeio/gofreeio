@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
 import { useAuth } from "../../context/AuthContext";
+import { apiUrl } from "../../utils/api";
 import "./Outsource.css";
 
 const CATEGORIES = [
@@ -41,7 +42,7 @@ export default function Outsource() {
     if (!token) return;
 
     setLoadingInquiries(true);
-    fetch("/api/outsource", {
+    fetch(apiUrl("/api/outsource"), {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(async (res) => {
@@ -67,7 +68,7 @@ export default function Outsource() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/outsource", {
+      const res = await fetch(apiUrl("/api/outsource"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

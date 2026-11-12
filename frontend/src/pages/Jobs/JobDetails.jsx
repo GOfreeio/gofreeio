@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
 import { useAuth } from "../../context/AuthContext";
+import { apiUrl } from "../../utils/api";
 
 export default function JobDetails() {
   const { id } = useParams();
@@ -31,7 +32,7 @@ export default function JobDetails() {
   const fetchJobDetails = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/jobs/${id}`);
+      const res = await fetch(apiUrl(`/api/jobs/${id}`));
       const data = await res.json();
 
       if (res.ok && data.success && data.data) {
@@ -59,7 +60,7 @@ export default function JobDetails() {
     if (!token) return;
     setLoadingProposals(true);
     try {
-      const res = await fetch(`/api/proposals/job/${jobId}`, {
+      const res = await fetch(apiUrl(`/api/proposals/job/${jobId}`), {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -101,7 +102,7 @@ export default function JobDetails() {
 
     setSubmittingProposal(true);
     try {
-      const res = await fetch("/api/proposals", {
+      const res = await fetch(apiUrl("/api/proposals"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -131,7 +132,7 @@ export default function JobDetails() {
 
   const handleAcceptProposal = async (proposalId) => {
     try {
-      const res = await fetch(`/api/proposals/${proposalId}/accept`, {
+      const res = await fetch(apiUrl(`/api/proposals/${proposalId}/accept`), {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -152,7 +153,7 @@ export default function JobDetails() {
 
   const handleRejectProposal = async (proposalId) => {
     try {
-      const res = await fetch(`/api/proposals/${proposalId}/reject`, {
+      const res = await fetch(apiUrl(`/api/proposals/${proposalId}/reject`), {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,

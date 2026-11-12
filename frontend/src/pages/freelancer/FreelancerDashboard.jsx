@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
 import { useAuth } from "../../context/AuthContext";
+import { apiUrl } from "../../utils/api";
 
 export default function FreelancerDashboard() {
   const { user, token } = useAuth();
@@ -10,7 +11,7 @@ export default function FreelancerDashboard() {
   useEffect(() => {
     if (!token) return;
 
-    fetch("/api/proposals/my", {
+    fetch(apiUrl("/api/proposals/my"), {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
+import { apiUrl } from "../../utils/api";
 import "./Jobs.css";
 
 const Jobs = () => {
@@ -17,7 +18,7 @@ const Jobs = () => {
   const [loadError, setLoadError] = useState("");
 
   useEffect(() => {
-    fetch("/api/jobs")
+    fetch(apiUrl("/api/jobs"))
       .then((res) => res.json())
       .then((data) => {
         if (data?.success && Array.isArray(data.data)) {
