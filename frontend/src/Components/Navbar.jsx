@@ -49,6 +49,12 @@ const Navbar = () => {
 
           {/* Desktop Navigation Links (Only shown when authenticated) */}
           <nav className="navbar-nav">
+            <Link
+              to="/careers"
+              className={`nav-link ${isActive("/careers") ? "active" : ""}`}
+            >
+              Careers
+            </Link>
             {!isAuthenticated ? null : user?.role === "client" ? (
               // Client navigation (NO freelancer chat desk)
               <>
@@ -216,6 +222,9 @@ const Navbar = () => {
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
           <div className="navbar-mobile-menu">
+            <Link to="/careers" onClick={() => setMobileMenuOpen(false)}>
+              Careers
+            </Link>
             {!isAuthenticated ? (
               <>
                 <Link to="/login" onClick={() => setMobileMenuOpen(false)}>

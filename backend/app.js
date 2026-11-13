@@ -12,6 +12,7 @@ import outsourceInquiryRoutes from "./src/routes/outsourceInquiry.routes.js";
 import outsourceRoutes from "./src/routes/outsource.routes.js";
 import contactInquiryRoutes from "./src/routes/contactInquiry.routes.js";
 import careerApplicationRoutes from "./src/routes/careerApplication.routes.js";
+import careerJobRoutes from "./src/routes/careerJob.routes.js";
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use("/api/outsource", outsourceInquiryRoutes);
 app.use("/api/outsource", outsourceRoutes);
 app.use("/api/contact", contactInquiryRoutes);
 app.use("/api/applications", careerApplicationRoutes);
+app.use("/api/career-jobs", careerJobRoutes);
 
 app.get('/', (req, res) => {
   res.json({

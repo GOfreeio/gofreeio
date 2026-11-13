@@ -175,6 +175,7 @@ export default function About() {
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/jobs">Find Jobs</Link></li>
                 <li><Link to="/client/create">Post a Job</Link></li>
+                <li><Link to="/careers">Careers</Link></li>
                 <li><Link to="/about">About Us</Link></li>
               </ul>
             </div>

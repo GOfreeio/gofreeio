@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import Landing from "./pages/Landing";
 import About from "./pages/About";
+import Careers from "./pages/Careers";
 import RoleGateway from "./pages/Auth/RoleGateway";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
@@ -27,6 +28,7 @@ const App = () => {
       <Route path="/login" element={<RoleGateway />} />
       <Route path="/register" element={<RoleGateway />} />
       <Route path="/outsource" element={<Outsource />} />
+      <Route path="/careers" element={<Careers />} />
 
       {/* ================= PROTECTED INTERNAL ROUTES ================= */}
       {/* Unauthenticated visitors cannot access these routes without logging in */}
